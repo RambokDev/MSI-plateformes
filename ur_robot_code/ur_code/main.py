@@ -53,8 +53,9 @@ def main():
             print("0 ==== Auto Mode ")
             print("1 ==== Go to init position ")
             print("2 ==== Go to gripper position ")
-            print("2 ==== Go to pickup position ")
-            print("2 ==== Go to pickup position ")
+            print("3 ==== Go to pickup position ")
+            print("4 ==== Start Venturi ")
+            print("5 ==== Stop Venturi ")
             user_input = input("Enter a number (or 'q' to quit): ")
 
             if user_input == 'q':
@@ -76,13 +77,18 @@ def main():
             elif choice == 2:
                 print("============ gripper position ============")
                 robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor']))
-                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['prehensor_position_out']))
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor_out']))
 
-            else:
+            elif choice == 3:
                 print("============ pickup position ============")
                 robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pickup_position']))
 
-
+            elif choice == 4:
+                print("============ start Venturi ============")
+                set_io_interface(1,PIN_VENTURI_VIDE,ON)
+            else:
+                print("============ stop Venturi ============")
+                set_io_interface(1,PIN_VENTURI_VIDE,OFF)
         #
         # ## Venturi ON
         # # """
