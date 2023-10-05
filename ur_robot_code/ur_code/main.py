@@ -16,7 +16,7 @@ import time
 
 # Import des fonctions provenant du modèle tuto_python.py
 import functions
-
+from auto_mode_ur import auto_mode_ur
 
 PIN_VENTURI_VIDE = 0
 PIN_CAM_ORIENTATION = 4
@@ -25,7 +25,11 @@ ON, OFF = 1, 0
 
 dictionnaire_joints = {'pos_vol': [-38.46, -79.78, 80.27, -90.46, -89.70, 85.17],
                        'pos_camera': [-74.08, -59.14, 82.87, -204.37, -16.88, 124.22],
-                       'pos_goulotte': [-72.68, -42.4, 88.63, -226.64, -18.4, 123.99]}
+                       'pos_goulotte': [-72.68, -42.4, 88.63, -226.64, -18.4, 123.99,],
+                       'position_prehensor': [-13.51, -48.22, 71.44, -113.19, -89.70, 110.25],
+                       'position_prehensor_out': [-11.25, -18.03, 13.83, -85.76, -89.66, 110.25],
+                       'pickup_position': [-15.09, -53.71, 130.91, -167.16, -89.90, 108.84],
+                       }
 
 dictionnaire_cartesian = {'pos_vol': [-0.729, 0.357, 0.222, 3.14, 0, 0],
                           'pos_camera_in_base': [-0.949, 0.763, 0.593, 1.893, -0.586, -1.896],
@@ -36,39 +40,54 @@ dictionnaire_cartesian = {'pos_vol': [-0.729, 0.357, 0.222, 3.14, 0, 0],
 
 def main():
     try:
-        print("")
-        print("==========================================================")
-        print("Demonstration program for robot displacement ")
-        print("==========================================================")
-        print("Press Ctrl-D to exit at any time")
+
         robot_interface = functions.MoveGroupPythonInterface()
         set_io_interface = rospy.ServiceProxy('/ur_hardware_interface/set_io', SetIO)
 
-        # Go to position vol
-        input("============ Press `Enter` to place robot to pos_vol ============")
-        # print(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
-        robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
+        while True:
+
+            print("")
+            print("==========================================================")
+            print("Demonstration program for robot displacement ")
+            print("==========================================================")
+            print("0 ==== Auto Mode ")
+            print("1 ==== Go to init position ")
+            print("2 ==== Go to gripper position ")
+            print("2 ==== Go to pickup position ")
+            print("2 ==== Go to pickup position ")
+            user_input = input("Enter a number (or 'q' to quit): ")
+
+            if user_input == 'q':
+                break
+            choice = int(user_input)
+            if choice == 0:
+                init_position = dictionnaire_joints['pos_vol']
+                prehensor_position = dictionnaire_joints['position_prehensor']
+                prehensor_position_out = dictionnaire_joints['position_prehensor_out']
+                pickup_position = dictionnaire_joints['pickup_position']
+                camera_position = dictionnaire_joints['pos_camera']
+                box_position = dictionnaire_joints['pos_goulotte']
+                auto_mode_ur(robot_interface,set_io_interface,init_position, prehensor_position,prehensor_position_out,pickup_position,camera_position,box_position)
+
+            elif choice ==1:
+                print("============ init position ============")
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
+
+            elif choice == 2:
+                print("============ gripper position ============")
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor']))
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['prehensor_position_out']))
+
+            else:
+                print("============ pickup position ============")
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pickup_position']))
 
 
-
-        ## Go to position 0
-        # input("============ Presser `Enter` pour placer le robot à pos_0")
-        # pos_0 = [-0.729, 0.357, 0.100, 3.14, 0, 0]
-        # ##### changement de frame pour "base"
-        # print(f"Frame actuelle : {robot_interface.move_group.get_pose_reference_frame()}")
-        # robot_interface.move_group.set_pose_reference_frame("base")
-        # print(f"Frame actuelle : {robot_interface.move_group.get_pose_reference_frame()}")
-        # robot_interface.go_to_pose_goal(pos_0)
-
-        # pub = rospy.Publisher('chatter', String, queue_size=10)
-        # str_choice = "close"
-        #
-        # pub.publish(str_choice)
         #
         # ## Venturi ON
         # # """
-        # # set_io_interface(1,PIN_VENTURI_VIDE,ON)
-        # # """
+        # set_io_interface(1,PIN_VENTURI_VIDE,ON)
+        # """
         #
         # ## Follow vecteur
         # input("============ Presser `Enter` pour commencer la descente")
