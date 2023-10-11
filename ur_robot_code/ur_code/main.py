@@ -25,9 +25,11 @@ ON, OFF = 1, 0
 
 dictionnaire_joints = {'pos_vol': [-38.46, -79.78, 80.27, -90.46, -89.70, 85.17],
                        'pos_camera': [-74.08, -59.14, 82.87, -204.37, -16.88, 124.22],
-                       'pos_goulotte': [-72.68, -42.4, 88.63, -226.64, -18.4, 123.99, ],
-                       'position_prehensor': [-13.51, -48.22, 71.44, -113.19, -89.70, 110.25],
-                       'position_prehensor_out': [-11.25, -18.03, 13.83, -85.76, -89.66, 110.25],
+                       'pos_camera_in': [-62.23, -48.79, 65.60, -197.19, -28.71, 124.01],
+                       'pos_goulotte': [-61.10, -34.06, 70.87, -217.17, -29.96, 123.91, ],
+                       'position_prehensor_above': [-11.35, -46.98, 71.33, -114.33, -89.69, 79.30],
+                       'position_prehensor_bottom': [-11.35, -44.46, 73.13, -118.65, -89.70, 79.32],
+                       'position_prehensor_out': [-9.77, -22.08, 28.53, -96.43, -89.65, 80.84],
                        'pickup_position': [-15.09, -53.71, 130.91, -167.16, -89.90, 108.84],
                        }
 
@@ -47,6 +49,7 @@ def main():
         gripperPublisher = rospy.Publisher('chatter', String, queue_size=10)
         rate = rospy.Rate(10)  # 10hz
 
+
         while True:
 
             print("")
@@ -55,12 +58,13 @@ def main():
             print("==========================================================")
             print("0 ==== Auto Mode ")
             print("1 ==== Go to init position ")
-            print("2 ==== Go to gripper position ")
-            print("3 ==== Go to pickup position ")
-            print("4 ==== Start Venturi ")
-            print("5 ==== Stop Venturi ")
-            print("6 ==== Open Gripper ")
-            print("7 ==== Close Gripper ")
+            print("2 ==== Take gripper position ")
+            print("3 ==== Leave gripper position ")
+            print("4 ==== Go to pickup position ")
+            print("5 ==== Start Venturi ")
+            print("6 ==== Stop Venturi ")
+            print("7 ==== Open Gripper ")
+            print("8 ==== Close Gripper ")
             user_input = input("Enter a number (or 'q' to quit): ")
 
             if user_input == 'q':
@@ -68,36 +72,78 @@ def main():
             choice = int(user_input)
             if choice == 0:
                 init_position = dictionnaire_joints['pos_vol']
-                prehensor_position = dictionnaire_joints['position_prehensor']
-                prehensor_position_out = dictionnaire_joints['position_prehensor_out']
+                # prehensor_position = dictionnaire_joints['position_prehensor']
+                # prehensor_position_out = dictionnaire_joints['position_prehensor_out']
                 pickup_position = dictionnaire_joints['pickup_position']
                 camera_position = dictionnaire_joints['pos_camera']
+                camera_position_in = dictionnaire_joints['pos_camera_in']
                 box_position = dictionnaire_joints['pos_goulotte']
-                auto_mode_ur(robot_interface, set_io_interface, init_position, prehensor_position,
-                             prehensor_position_out, pickup_position, camera_position, box_position)
+                auto_mode_ur(robot_interface, set_io_interface, init_position, pickup_position, camera_position, camera_position_in, box_position)
 
             elif choice == 1:
                 print("============ init position ============")
                 robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
 
             elif choice == 2:
+
+                print("============ init position ============")
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
+
+
                 print("============ gripper position ============")
                 robot_interface.go_to_joint_state(
-                    functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor']))
+                    functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor_above']))
+                print("============ Take the prehensor ============")
+                robot_interface.go_to_joint_state(
+                    functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor_bottom']))
+                str_choice = "close"
+                rospy.loginfo(str_choice)
+                gripperPublisher.publish(str_choice)
+                rate.sleep()
+                time.sleep(0.5)
+                print("============ go out gripper position ============")
+                robot_interface.go_to_joint_state(
+                    functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor_out']))
+                print("============ init position ============")
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
+
+
+            elif choice == 3:
+                print("============ init position ============")
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
+
+                print("============ go out gripper position ============")
                 robot_interface.go_to_joint_state(
                     functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor_out']))
 
-            elif choice == 3:
+                print("============ Leave the prehensor ============")
+                robot_interface.go_to_joint_state(
+                    functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor_bottom']))
+                str_choice = "open"
+                rospy.loginfo(str_choice)
+                gripperPublisher.publish(str_choice)
+                rate.sleep()
+
+
+                print("============ gripper position ============")
+                robot_interface.go_to_joint_state(
+                    functions.convert_deg_to_rad(dictionnaire_joints['position_prehensor_above']))
+
+                print("============ init position ============")
+                robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pos_vol']))
+
+
+            elif choice == 4:
                 print("============ pickup position ============")
                 robot_interface.go_to_joint_state(functions.convert_deg_to_rad(dictionnaire_joints['pickup_position']))
 
-            elif choice == 4:
+            elif choice == 5:
                 print("============ start Venturi ============")
                 set_io_interface(1, PIN_VENTURI_VIDE, ON)
-            elif choice == 5:
+            elif choice == 6:
                 print("============ stop Venturi ============")
                 set_io_interface(1, PIN_VENTURI_VIDE, OFF)
-            elif choice == 6:
+            elif choice == 7:
                 print("============ open gripper ============")
                 str_choice = "open"
                 rospy.loginfo(str_choice)

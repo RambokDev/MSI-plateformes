@@ -8,15 +8,15 @@ PIN_CAM_DEVRACAGE = 5
 ON, OFF = 1, 0
 
 
-def auto_mode_ur(robot_interface, set_io_interface, init_position, prehensor_position, prehensor_position_out,
-                 pickup_position, camera_position,box_position):
+def auto_mode_ur(robot_interface, set_io_interface, init_position,
+                 pickup_position, camera_position,camera_position_in,box_position):
     print("==============Auto mode              =================")
-    print("==============Go to init mode        =================")
-    robot_interface.go_to_joint_state(functions.convert_deg_to_rad(init_position))
+    # print("==============Go to init mode        =================")
+    # robot_interface.go_to_joint_state(functions.convert_deg_to_rad(init_position))
 
-    print("==============Go to take the gripper =================")
-    robot_interface.go_to_joint_state(functions.convert_deg_to_rad(prehensor_position))
-    robot_interface.go_to_joint_state(functions.convert_deg_to_rad(prehensor_position_out))
+    # print("==============Go to take the gripper =================")
+    # robot_interface.go_to_joint_state(functions.convert_deg_to_rad(prehensor_position))
+    # robot_interface.go_to_joint_state(functions.convert_deg_to_rad(prehensor_position_out))
 
     print("==============Go to waiting position =================")
     robot_interface.go_to_joint_state(functions.convert_deg_to_rad(init_position))
@@ -28,11 +28,14 @@ def auto_mode_ur(robot_interface, set_io_interface, init_position, prehensor_pos
 
     print("==============Start Venturi          =================")
     set_io_interface(1, PIN_VENTURI_VIDE, ON)
+    time.sleep(5)
+
     print("==============GO to waiting position =================")
     robot_interface.go_to_joint_state(functions.convert_deg_to_rad(init_position))
 
     print("==============Go to camera position  =================")
     robot_interface.go_to_joint_state(functions.convert_deg_to_rad(camera_position))
+    robot_interface.go_to_joint_state(functions.convert_deg_to_rad(camera_position_in))
 
     print("==============Rotation for camera    =================")
     set_io_interface(1, PIN_CAM_ORIENTATION, ON)
