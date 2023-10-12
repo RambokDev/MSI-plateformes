@@ -44,8 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#motivation">Motivation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 </ul>
 </li>
 </ul>
@@ -76,21 +75,11 @@
              
   <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">simpleble</span></code> is a high-level OO Python package which aims to provide an easy and intuitive way of interacting with nearby Bluetooth Low Energy (BLE) devices (GATT servers). In essence, this package is an extension of the <code class="docutils literal notranslate"><span class="pre">bluepy</span></code> package created by Ian Harvey (see <a class="reference external" href="https://github.com/IanHarvey/bluepy/">here</a>)</p>
-<p>The aim here was to define a single object which would allow users to perform the various operations performed by the <code class="docutils literal notranslate"><span class="pre">bluepy.btle.Peripheral</span></code>, <code class="docutils literal notranslate"><span class="pre">bluepy.btle.Scanner</span></code>, <code class="docutils literal notranslate"><span class="pre">bluepy.btle.Service</span></code> and <code class="docutils literal notranslate"><span class="pre">bluepy.btle.Characteristic</span></code> classes of <code class="docutils literal notranslate"><span class="pre">bluepy</span></code>, from one central place. This functionality is facilitated by the <code class="docutils literal notranslate"><span class="pre">simpleble.SimpleBleClient</span></code> and <code class="docutils literal notranslate"><span class="pre">simpleble.SimpleBleDevice</span></code> classes, where the latter is an extention/subclass of <code class="docutils literal notranslate"><span class="pre">bluepy.btle.Peripheral</span></code>, combined with properties of <code class="docutils literal notranslate"><span class="pre">bluepy.btle.ScanEntry</span></code>.</p>
-<p>The current implementation has been developed in Python 3 and tested on a Raspberry Pi Zero W, running Raspbian 9 (stretch), but should work with Python 2.7+ (maybe with minor modifications in terms of printing and error handling) and most Debian based OSs.</p>
-<section id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading"></a></h2>
 <p>Following the legacy of the clearance project proposed by a partnair company. Icam wishes to develop its robotics center in order to demonstrate its ability to present POCs (proofs of concept) with the aim of reaching industrial robotics professionals.</p>
 <p>Today, our Cobot is not designed for industrial clearance, due to its physical limitations, so we will exclude the speed performance criterion. Thus, we will remain within the framework of the development of a POC. This therefore allows us to adopt a general vision of the robotic platform by having the possibility of removing several types of objects ranging from sanding, packaging or even removal. In this way, we will be able to highlight the flexibility of the system.</p>
-</section>
-<section id="limitations">
-<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading"></a></h2>
-<ul class="simple">
-<li><p>As my main use-case scenario was to simply connect two devices, the current version of <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleble.SimpleBleClient</span></code> has been designed and implemented with this use-case in mind. As such, if you are looking for a package to allow you to connect to multiple devices, then know that off-the-self this package DOES NOT allow you to do so. However, implementing such a feature is an easily achievable task, which has been planned for sometime in the near future and if there proves to be interest on the project, I would be happy to speed up the process.</p></li>
-<li><p>Only Read and Write operations are currently supported, but I am planning on adding Notifications soon.</p></li>
-<li><p>Although the interfacing operations of the <code class="xref py py-class docutils literal notranslate"><span class="pre">bluepy.btle.Service</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">bluepy.btle.Peripheral</span></code> classes have been brought forward to the <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleble.SimpleBleClient</span></code> class, the same has not been done for the <code class="xref py py-class docutils literal notranslate"><span class="pre">bluepy.btle.Descriptor</span></code>, meaning that the <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleble.SimpleBleClient</span></code> cannot be used to directly access the Descriptors. This can however be done easily by obtaining a handle of a <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleble.SimpleBleDevice</span></code> object and calling the superclass <code class="xref py py-meth docutils literal notranslate"><span class="pre">bluepy.btle.Peripheral.getDescriptors()</span></code> method.</p></li>
-</ul>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">MSI-plateforme</span></code> is a software for centralizing the commands of a robotic platform under ROS. You will find different parts, such as UR10e and Fanuc robot controls, but also the control of external elements (grippers, lights, cameras, etc.)</p>
 </section>
 </section>
 
