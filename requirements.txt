@@ -2,3 +2,6 @@ pyserial
 bluepy
 sphinx-rtd-theme
 sphinx
+PyQt5
+numpy
+opencv-python
