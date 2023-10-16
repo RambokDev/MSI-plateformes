@@ -5,6 +5,7 @@ import sys
 import numpy as np
 import cv2 as cv
 import os
+
 x_coef = 1 - 0.0182
 x_offset = (-0.0658) / 10  # en cm
 y_coef = 1 + 0.01835
@@ -12,10 +13,7 @@ y_offset = (-0.35) / 10  # en cm
 z_offset = 0.5
 board_vector = [-0.64961, -0.15675, -0.45695, 0.00086, 0.00434, 0.00028]
 
-
 lines_coef = np.load(f'{os.getcwd()}/CalibrationRobot/up_and_down_img_folder/lines_coef.npy')
-
-
 
 
 class MainWidget(QWidget):
@@ -56,6 +54,8 @@ class ImageWidget(QWidget):
         print(start_pt, vect)
         print('start : ', start_pt)
         print('vect : ', vect)
+        position, vecteur = self.mise_en_forme_commande_vecteur(start_pt, vect)
+        print(position, vecteur)
 
     def compute_trajectory(self, i, j, z0):
         # r0 = [100, 30, 120]
@@ -84,6 +84,16 @@ class ImageWidget(QWidget):
         start_pt = np.array([[(start_pt[0][0] - 0.0066) * (1 - 0.01815)], [(start_pt[1][0] - 0.03505) * (1 + 0.01845)]])
 
         return start_pt, vect
+
+    def mise_en_forme_commande_vecteur(self, pos_0, vect):
+        print(pos_0)
+        print(vect)
+        commande = f"({pos_0[0][0] * 0.01},{pos_0[1][0] * 0.01},{(pos_0[2][0]) * 0.01},3.14,0,0)"
+        vecteur = f"({vect[0][0]},{vect[1][0]},{vect[2][0]})"
+        print(f"COMMANDE : {commande}")
+        print(f"VECTEUR : {vecteur}")
+
+        return commande, vecteur
 
 
 def main():
