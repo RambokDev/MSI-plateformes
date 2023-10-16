@@ -5,3 +5,4 @@ sphinx
 PyQt5
 numpy
 opencv-python
+pypylon

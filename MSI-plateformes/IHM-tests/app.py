@@ -5,6 +5,8 @@ import sys
 import numpy as np
 import cv2 as cv
 import os
+from pypylon import pylon
+from PyQt5.QtGui import QImage, QPixmap
 
 x_coef = 1 - 0.0182
 x_offset = (-0.0658) / 10  # en cm
@@ -36,11 +38,49 @@ class ImageWidget(QWidget):
         super().__init__()
         self.show_image()
 
+    def camera_basler(self):
+
+        tl_factory = pylon.TlFactory.GetInstance()
+        camera = pylon.InstantCamera()
+        camera.Attach(tl_factory.CreateFirstDevice())
+        camera.Open()
+        camera.StartGrabbing(1)
+        converter = pylon.ImageFormatConverter()
+        converter.OutputPixelFormat = pylon.PixelType_BGR8packed
+        converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
+        grab = camera.RetrieveResult(2000, pylon.TimeoutHandling_Return)
+        if grab.GrabSucceeded():
+            img = converter.Convert(grab)
+
+            # img = grab.GetArray()
+
+            # print(f'Size of image: {img.shape}')
+            return img
+
+        camera.Close()
+
+
+
+
+
     def show_image(self):
-        image = QPixmap("test_box.jpg")
+        image = self.camera_basler()
+
+
+
+        # image = QPixmap("test_box.jpg")
+        # print(img)
+        # image = QPixmap(img)
         print(image)
         label = QLabel(self)
-        label.setPixmap(image)
+
+        height, width, channels = image.shape
+        step = channels * width
+        qImg = QImage(image.data, width, height, step, QImage.Format_RGB888)
+        label.setPixmap(QPixmap.fromImage(qImg))
+
+
+        # label.setPixmap(QPixmap.fromImage(image))
         label.resize(1200, 600)
         label.setScaledContents(True)
         label.setAlignment(QtCore.Qt.AlignCenter)
