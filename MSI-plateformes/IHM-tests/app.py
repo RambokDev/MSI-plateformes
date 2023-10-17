@@ -3,11 +3,13 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton
 from PyQt5.QtGui import QPixmap
 import sys
 import numpy as np
-import cv2 as cv
+import cv2
+
 import os
 from pypylon import pylon
 from PyQt5.QtGui import QImage, QPixmap
-
+from PIL import Image
+import PIL
 x_coef = 1 - 0.0182
 x_offset = (-0.0658) / 10  # en cm
 y_coef = 1 + 0.01835
@@ -40,48 +42,76 @@ class ImageWidget(QWidget):
 
     def camera_basler(self):
 
-        tl_factory = pylon.TlFactory.GetInstance()
-        camera = pylon.InstantCamera()
-        camera.Attach(tl_factory.CreateFirstDevice())
-        camera.Open()
-        camera.StartGrabbing(1)
+
+        tlFactory = pylon.TlFactory.GetInstance()
+
+        devices = tlFactory.EnumerateDevices()
+        print(devices)
+
+        camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateDevice(devices[1]))
+        camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
         converter = pylon.ImageFormatConverter()
+
         converter.OutputPixelFormat = pylon.PixelType_BGR8packed
         converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
-        grab = camera.RetrieveResult(2000, pylon.TimeoutHandling_Return)
-        if grab.GrabSucceeded():
-            img = converter.Convert(grab)
-
-            # img = grab.GetArray()
-
-            # print(f'Size of image: {img.shape}')
-            return img
-
-        camera.Close()
 
 
+        if camera.IsGrabbing():
 
+            grab = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+
+            # grab = camera.RetrieveResult(2000, pylon.TimeoutHandling_Return)
+            if grab.GrabSucceeded():
+                # img = converter.Convert(grab)
+
+                # image = converter.Convert(grab)
+                # img = grab.GetArray()
+                #
+                img = pylon.PylonImage()
+
+                img.AttachGrabResultBuffer(grab)
+                filename = "saved_pypylon_img.png"
+                img.Save(pylon.ImageFileFormat_Png, filename)
+
+                return filename
+
+            camera.Close()
 
 
     def show_image(self):
-        image = self.camera_basler()
+
+
+        img_name = self.camera_basler()
+
+
+        # # img = cv2.resize(img, (int(self.ratio * self.image_w), int(self.ratio * self.image_h)))
+        # image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        # print(image)
+        # height, width, channels = img.shape
+        # step = channels * width
+        # qImg = QImage(img.data, width, height, step, QImage.Format_RGB888)
+        # label = QLabel(self)
+        #
+        #
+        # label.setPixmap(QPixmap.fromImage(qImg))
+        #
 
 
 
-        # image = QPixmap("test_box.jpg")
-        # print(img)
-        # image = QPixmap(img)
-        print(image)
+        image = QPixmap(img_name)
+        # height, width, channels = image.shape
+        # print(height, width, channels)
+        # step = channels * width
+        # qImg = QImage(image.data, width, height, step, QImage.Format_RGB888)
+        # print(image)
+        # print(qImg)
         label = QLabel(self)
 
-        height, width, channels = image.shape
-        step = channels * width
-        qImg = QImage(image.data, width, height, step, QImage.Format_RGB888)
-        label.setPixmap(QPixmap.fromImage(qImg))
+        label.setPixmap(image)
+        # label.setPixmap(QPixmap.fromImage(qImg))
 
-
-        # label.setPixmap(QPixmap.fromImage(image))
         label.resize(1200, 600)
+        # label.resize(width, height)
         label.setScaledContents(True)
         label.setAlignment(QtCore.Qt.AlignCenter)
         label.mousePressEvent = self.getPos
@@ -113,7 +143,7 @@ class ImageWidget(QWidget):
             [[((r0[0] + d[0] * start_t) + x_offset) * x_coef], [((r0[1] + d[1] * start_t) + y_offset) * y_coef],
              [(r0[2] + d[2] * start_t) + z_offset]])
         # print("Start : ", (r0[2] + d[2] * start_t))
-        board_rot, jac = cv.Rodrigues(np.array([[board_vector[3]], [board_vector[4]], [board_vector[5]]]))
+        board_rot, jac = cv2.Rodrigues(np.array([[board_vector[3]], [board_vector[4]], [board_vector[5]]]))
         board_trans = np.array([[board_vector[0] * 100], [board_vector[1] * 100], [board_vector[2] * 100]])
 
         end_pt = np.dot(board_rot, end_pt) + board_trans
