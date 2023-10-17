@@ -6,6 +6,8 @@ import numpy as np
 import cv2
 
 import os
+
+from PySide2.QtCore import Slot
 from pypylon import pylon
 from PyQt5.QtGui import QImage, QPixmap
 from PIL import Image
@@ -40,33 +42,29 @@ class ImageWidget(QWidget):
         super().__init__()
         self.show_image()
 
+
+
+
     def camera_basler(self):
 
-
         tlFactory = pylon.TlFactory.GetInstance()
-
         devices = tlFactory.EnumerateDevices()
         print(devices)
-
         camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateDevice(devices[1]))
         camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
         converter = pylon.ImageFormatConverter()
-
         converter.OutputPixelFormat = pylon.PixelType_BGR8packed
         converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
-
 
         if camera.IsGrabbing():
 
             grab = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
-
             # grab = camera.RetrieveResult(2000, pylon.TimeoutHandling_Return)
             if grab.GrabSucceeded():
-                # img = converter.Convert(grab)
 
                 # image = converter.Convert(grab)
                 # img = grab.GetArray()
-                #
+
                 img = pylon.PylonImage()
 
                 img.AttachGrabResultBuffer(grab)
@@ -80,38 +78,12 @@ class ImageWidget(QWidget):
 
     def show_image(self):
 
-
         img_name = self.camera_basler()
-
-
-        # # img = cv2.resize(img, (int(self.ratio * self.image_w), int(self.ratio * self.image_h)))
-        # image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        # print(image)
-        # height, width, channels = img.shape
-        # step = channels * width
-        # qImg = QImage(img.data, width, height, step, QImage.Format_RGB888)
-        # label = QLabel(self)
-        #
-        #
-        # label.setPixmap(QPixmap.fromImage(qImg))
-        #
-
-
-
         image = QPixmap(img_name)
-        # height, width, channels = image.shape
-        # print(height, width, channels)
-        # step = channels * width
-        # qImg = QImage(image.data, width, height, step, QImage.Format_RGB888)
-        # print(image)
-        # print(qImg)
         label = QLabel(self)
-
+        ratio, width, height = self.compute_ratio()
+        label.resize(int(ratio * width), int(ratio * height))
         label.setPixmap(image)
-        # label.setPixmap(QPixmap.fromImage(qImg))
-
-        label.resize(1200, 600)
-        # label.resize(width, height)
         label.setScaledContents(True)
         label.setAlignment(QtCore.Qt.AlignCenter)
         label.mousePressEvent = self.getPos
@@ -126,6 +98,22 @@ class ImageWidget(QWidget):
         print('vect : ', vect)
         position, vecteur = self.mise_en_forme_commande_vecteur(start_pt, vect)
         print(position, vecteur)
+
+    def compute_ratio(self):
+
+        # Variables
+        nb_images = 2
+        width = 3840
+        height = 2748
+        fps = 300
+        exposureTime = 20000
+        exitCode = 0
+
+        W = 1200
+        H = 600
+        ratio = min(W / width, H / height)
+
+        return ratio, width, height
 
     def compute_trajectory(self, i, j, z0):
         # r0 = [100, 30, 120]
@@ -151,7 +139,7 @@ class ImageWidget(QWidget):
 
         vect = end_pt - start_pt
 
-        start_pt = np.array([[(start_pt[0][0] - 0.0066) * (1 - 0.01815)], [(start_pt[1][0] - 0.03505) * (1 + 0.01845)]])
+        # start_pt = np.array([[(start_pt[0][0] - 0.0066) * (1 - 0.01815)], [(start_pt[1][0] - 0.03505) * (1 + 0.01845)]])
 
         return start_pt, vect
 
@@ -170,7 +158,7 @@ def main():
     application = QApplication(sys.argv)
     widget = ImageWidget()
     widget.resize(1200, 600)
-    widget.setWindowTitle("Test")
+    widget.setWindowTitle("Robot Ur10")
     widget.show()
     sys.exit(application.exec_())
 
