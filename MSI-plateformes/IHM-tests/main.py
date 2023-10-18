@@ -33,6 +33,7 @@ class Ui(QtWidgets.QMainWindow):
         self.ON, self.OFF = 1, 0
         self.set_io_interface = rospy.ServiceProxy('/ur_hardware_interface/set_io', SetIO)
         self.robot_interface = functions.MoveGroupPythonInterface()
+        self.robot_interface.move_group.set_pose_reference_frame("base")
 
         self.take_image.clicked.connect(self.show_image)
         self.quit_button.clicked.connect(QApplication.instance().quit)
@@ -97,8 +98,8 @@ class Ui(QtWidgets.QMainWindow):
     def compute_ratio(self):
 
         # Variables
-        # width = 3000  # 3840
-        # height = 2000  # 2748
+        # width = 3840  # 3840
+        # height = 2748  # 2748
 
         # W = 1385
         # H = 1000
@@ -117,7 +118,7 @@ class Ui(QtWidgets.QMainWindow):
         x = event.pos().x()
         y = event.pos().y()
         ratio, width, height = self.compute_ratio()
-
+        print(ratio)
         print("coordinates in IHM picture: ", x, y)
         realX = int(x / ratio)
         realY = int(y / ratio)
@@ -137,18 +138,25 @@ class Ui(QtWidgets.QMainWindow):
         self.robot_interface.go_to_pose_goal(robot_command)
 
     def mise_en_forme_commande_vecteur(self, pos_0, vect):
+
         print(pos_0)
         print(vect)
+
         commande = f"({pos_0[0][0] * 0.01},{pos_0[1][0] * 0.01},{(pos_0[2][0]) * 0.01},3.14,0,0)"
         vecteur = f"({vect[0][0]},{vect[1][0]},{vect[2][0]})"
+
+
         print(f"COMMANDE : {commande}")
         print(f"VECTEUR : {vecteur}")
 
-        data_1 = pos_0[0][0] + (0.0519 * pos_0[0][0] + 0.0324) + 0.002
-        data_2 = pos_0[1][0] + (0.0583 * pos_0[0][0] + 0.0036) + 0.0015
+        data_1 = pos_0[0][0] * 0.01 + (0.0519 * pos_0[0][0] * 0.01 + 0.0324) + 0.002
+        data_2 = pos_0[1][0] * 0.01 + (0.0583 * pos_0[0][0] * 0.01 + 0.0036) + 0.0015
 
-        robot_command = [pos_0[0][0] * 0.01, pos_0[1][0] * 0.01, pos_0[2][0] * 0.01, 3.14, 0, 0]
-        # robot_command = [data_1, data_2, pos_0[2][0], 3.14, 0, 0]
+        #
+        # robot_command = [pos_0[0][0] * 0.01 + 0.1, pos_0[1][0] * 0.01, pos_0[2][0] * 0.01, 3.14, 0, 0]
+        #
+
+        robot_command = [data_1, data_2, pos_0[2][0] * 0.01, 3.14, 0, 0]
 
         return commande, vecteur, robot_command
 
@@ -162,11 +170,11 @@ class Ui(QtWidgets.QMainWindow):
         end_pt = np.array(
             [[((r0[0] + d[0] * end_t) + x_offset) * x_coef], [((r0[1] + d[1] * end_t) + y_offset) * y_coef],
              [(r0[2] + d[2] * end_t) + z_offset]])
-        # print("End : ", (r0[2] + d[2] * end_t))
+
         start_pt = np.array(
             [[((r0[0] + d[0] * start_t) + x_offset) * x_coef], [((r0[1] + d[1] * start_t) + y_offset) * y_coef],
              [(r0[2] + d[2] * start_t) + z_offset]])
-        # print("Start : ", (r0[2] + d[2] * start_t))
+
         board_rot, jac = cv2.Rodrigues(np.array([[board_vector[3]], [board_vector[4]], [board_vector[5]]]))
         board_trans = np.array([[board_vector[0] * 100], [board_vector[1] * 100], [board_vector[2] * 100]])
 

@@ -21,8 +21,7 @@ import functions
 
 # Changement de frame
 
-# robot_interface.move_group.set_pose_reference_frame("tool0")
-# print(f"Frame actuelle : {robot_interface.move_group.get_pose_reference_frame()}")
+
 
 #########################################################################################################
 
@@ -51,6 +50,11 @@ def main():
         print("Press Ctrl-D to exit at any time")
         robot_interface = functions.MoveGroupPythonInterface()
         set_io_interface = rospy.ServiceProxy('/ur_hardware_interface/set_io', SetIO)
+
+        #
+        robot_interface.move_group.set_pose_reference_frame("tool0")
+        # print(f"Frame actuelle : {robot_interface.move_group.get_pose_reference_frame()}")
+        #
 
         ## Go to position vol
         # input("============ Presser `Enter` pour placer le robot à pos_vol")

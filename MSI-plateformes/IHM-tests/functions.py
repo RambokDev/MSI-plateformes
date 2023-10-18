@@ -260,6 +260,7 @@ class MoveGroupPythonInterface(object):
         # Note that since this section of code will not be included in the tutorials
         # we use the class variable rather than the copied state variable
         current_pose = self.move_group.get_current_pose().pose
+        print(current_pose)
         print(f"Result for all_close function : {all_close(pose_goal, current_pose, 0.01)}")
         return all_close(pose_goal, current_pose, 0.01)
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1099</width>
+    <width>1209</width>
     <height>793</height>
    </rect>
   </property>
@@ -21,8 +21,8 @@
        <widget class="QFrame" name="frame_2">
         <property name="maximumSize">
          <size>
-          <width>1385</width>
-          <height>1080</height>
+          <width>16777215</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="frameShape">
@@ -37,10 +37,16 @@
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QLabel" name="image">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
-             <width>1385</width>
-             <height>1080</height>
+             <width>16777215</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="lineWidth">
@@ -101,7 +107,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1099</width>
+     <width>1209</width>
      <height>22</height>
     </rect>
    </property>
