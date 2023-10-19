@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 import time
 import cv2
+import imutils
 import numpy as np
 from PyQt5 import QtWidgets, uic
 import sys
@@ -16,7 +17,9 @@ from numpy import ndarray, size
 
 x_coef = 1 - 0.0182
 x_offset = (-0.0658) / 10  # en cm
+# x_offset = 0
 y_coef = 1 + 0.01835
+# y_offset = 0
 y_offset = (-0.35) / 10  # en cm
 z_offset = 0.5
 board_vector = [-0.64961, -0.15675, -0.45695, 0.00086, 0.00434, 0.00028]
@@ -33,10 +36,14 @@ class Ui(QtWidgets.QMainWindow):
         self.ON, self.OFF = 1, 0
         self.set_io_interface = rospy.ServiceProxy('/ur_hardware_interface/set_io', SetIO)
         self.robot_interface = functions.MoveGroupPythonInterface()
+
         self.robot_interface.move_group.set_pose_reference_frame("base")
+
 
         self.take_image.clicked.connect(self.show_image)
         self.quit_button.clicked.connect(QApplication.instance().quit)
+        # self.setGeometry(0, 0, 1920, 1080)
+
         self.showMaximized()
         self.filename = None
         self.show()
@@ -47,6 +54,12 @@ class Ui(QtWidgets.QMainWindow):
         devices = tlFactory.EnumerateDevices()
         print(devices)
         camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateDevice(devices[1]))
+        camera.Open()
+        camera.Width = 3000
+        camera.Height = 2000
+
+        camera.CenterX.SetValue(True)
+        camera.CenterY.SetValue(True)
         camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
         converter = pylon.ImageFormatConverter()
         converter.OutputPixelFormat = pylon.PixelType_BGR8packed
@@ -78,40 +91,36 @@ class Ui(QtWidgets.QMainWindow):
 
         print("=====Display image =====")
         img_name = self.camera_basler()
-        self.image.resize(1385, 1000)
+        # self.image.resize(1385, 1000)
+        self.image.setFixedSize(1385, 1000)
 
         ratio, width, height = self.compute_ratio()
 
         image = cv2.imread(img_name)
+        # image = imutils.resize(image, width=1385)
+
         image = cv2.resize(image, (int(ratio * width), int(ratio * height)))
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         height, width, channels = image.shape
+        print(height, width, channels)
         step = channels * width
         qImg = QImage(image.data, width, height, step, QImage.Format_RGB888)
-        self.image.setFixedSize(1385, 1000)
-
+        # self.image.setFixedSize(1385, 1000)
         self.image.setPixmap(QPixmap.fromImage(qImg))
-        self.image.setAlignment(QtCore.Qt.AlignCenter)
+        # self.image.setAlignment(QtCore.Qt.AlignCenter)
 
         self.image.mousePressEvent = self.getPos
 
     def compute_ratio(self):
 
-        # Variables
-        # width = 3840  # 3840
-        # height = 2748  # 2748
-
-        # W = 1385
-        # H = 1000
         W = self.image.width()
         H = self.image.height()
         self.imageDeBase = cv2.imread(self.filename)
 
         width = size(self.imageDeBase, 1)
         height = size(self.imageDeBase, 0)
-
         ratio = min(W / width, H / height)
-        print(W, H, width, height)
+        print(ratio, W, H, width, height)
         return ratio, width, height
 
     def getPos(self, event):
@@ -128,37 +137,34 @@ class Ui(QtWidgets.QMainWindow):
         print(start_pt, vect)
         print('start : ', start_pt)
         print('vect : ', vect)
-        position, vecteur, robot_command = self.mise_en_forme_commande_vecteur(start_pt, vect)
-        print(position, vecteur)
+        robot_command = self.mise_en_forme_commande_vecteur(start_pt, vect)
+        self.go_to_position(robot_command)
 
-        self.go_to_position(position, vecteur, robot_command)
-
-    def go_to_position(self, position, vector, robot_command):
-        print(position, vector, robot_command)
+    def go_to_position(self, robot_command):
+        print(robot_command)
+        print(f"Frame before : {self.robot_interface.move_group.get_pose_reference_frame()}")
+        print(self.robot_interface.move_group.get_current_state().joint_state.position)
         self.robot_interface.go_to_pose_goal(robot_command)
+        print(f"Frame after: {self.robot_interface.move_group.get_pose_reference_frame()}")
+        print(self.robot_interface.move_group.get_current_state().joint_state.position)
 
     def mise_en_forme_commande_vecteur(self, pos_0, vect):
 
-        print(pos_0)
-        print(vect)
-
-        commande = f"({pos_0[0][0] * 0.01},{pos_0[1][0] * 0.01},{(pos_0[2][0]) * 0.01},3.14,0,0)"
-        vecteur = f"({vect[0][0]},{vect[1][0]},{vect[2][0]})"
-
-
-        print(f"COMMANDE : {commande}")
-        print(f"VECTEUR : {vecteur}")
-
-        data_1 = pos_0[0][0] * 0.01 + (0.0519 * pos_0[0][0] * 0.01 + 0.0324) + 0.002
-        data_2 = pos_0[1][0] * 0.01 + (0.0583 * pos_0[0][0] * 0.01 + 0.0036) + 0.0015
-
+        # commande = f"({pos_0[0][0] * 0.01},{pos_0[1][0] * 0.01},{(pos_0[2][0]) * 0.01},3.14,0,0)"
+        # vecteur = f"({vect[0][0]},{vect[1][0]},{vect[2][0]})"
         #
+        # print(f"COMMANDE : {commande}")
+        # print(f"VECTEUR : {vecteur}")
+
+        data_1 = pos_0[0][0] * 0.01 + (0.0519 * (pos_0[0][0] * 0.01) + 0.0324) + 0.002
+        data_2 = pos_0[1][0] * 0.01 + (0.0583 * (pos_0[1][0] * 0.01) + 0.0036) + 0.0015
+
         # robot_command = [pos_0[0][0] * 0.01 + 0.1, pos_0[1][0] * 0.01, pos_0[2][0] * 0.01, 3.14, 0, 0]
-        #
-
+        # xoff = -40 * 0.001
+        # yoff = -70 * 0.001
         robot_command = [data_1, data_2, pos_0[2][0] * 0.01, 3.14, 0, 0]
 
-        return commande, vecteur, robot_command
+        return robot_command
 
     def compute_trajectory(self, i, j, z0):
 
