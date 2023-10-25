@@ -13,4 +13,4 @@ def get_com_ports():
 
 if __name__ == "__main__":
     get_com_ports()
- 
+

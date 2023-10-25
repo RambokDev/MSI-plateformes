@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from __future__ import print_function
-#from six.moves import input
+# from six.moves import input
 
 import sys
 import copy
@@ -18,6 +18,7 @@ from moveit_commander.conversions import pose_to_list
 
 from ur_msgs.srv import SetIO
 from ur_msgs.msg import IOStates
+
 
 ##################################
 # Permet de set une io
@@ -64,11 +65,13 @@ def all_close(goal, actual, tolerance):
 
     return True
 
+
 def convert_deg_to_rad(tab):
     res = []
     for i in tab:
-        res.append(i*pi/180)
+        res.append(i * pi / 180)
     return res
+
 
 class MoveGroupPythonInterface(object):
     """MoveGroupPythonInterface"""
@@ -79,7 +82,7 @@ class MoveGroupPythonInterface(object):
         ## First initialize `moveit_commander`_ and a `rospy`_ node:
         moveit_commander.roscpp_initialize(sys.argv)
         rospy.init_node("move_group_python_interface", anonymous=True)
-        
+
         ## Instantiate a `RobotCommander` object. Provides information such as the robot's
         ## kinematic model and the robot's current joint states
         robot = moveit_commander.RobotCommander()
@@ -102,7 +105,7 @@ class MoveGroupPythonInterface(object):
             moveit_msgs.msg.DisplayTrajectory,
             queue_size=20,
         )
-        
+
         ## Getting Basic Information
         # We can get the name of the reference frame for this robot:
         planning_frame = move_group.get_planning_frame()
@@ -129,21 +132,20 @@ class MoveGroupPythonInterface(object):
         self.planning_frame = planning_frame
         self.eef_link = eef_link
         self.group_names = group_names
-        
+
         # init variable préhension
         self.stop_movement = False
-   
-        
+
     def event_callback(self, data):
         if data.digital_in_states[0].state == True:
             print(data.digital_in_states[0].state)
             self.stop_movement = True
-    
+
     def prehension(self, pose):
         """
         Partie en développement au moment de l'arrêt du MSI S1 2022/2023
         """
-    
+
         # Initialize node
         # rospy.init_node('moveit_example')
 
@@ -156,7 +158,6 @@ class MoveGroupPythonInterface(object):
         # Create subscriber
         rospy.Subscriber("ur_hardware_interface/io_states", IOStates, self.event_callback)
         # print(msg.digital_in_states[0].state)
-        
 
         # Create publisher
         # move_pub = rospy.Publisher("move_topic", String, queue_size=10)
@@ -175,20 +176,19 @@ class MoveGroupPythonInterface(object):
         #     rospy.sleep(0.1)
         #     print(self.move_group.get_current_state())
 
-        while self.stop_movement == False : #and success == False:
-            #print('in')
+        while self.stop_movement == False:  # and success == False:
+            # print('in')
             rospy.sleep(0.1)
 
         print('out')
         self.stop_movement = False
-        
+
         # Stop movement
         self.move_group.stop()
         self.move_group.clear_pose_targets()
 
         # Send stop signal via publisher
         # self.move_pub.publish("stopped")
-        
 
     def go_to_joint_state(self, joint_goal):
         """
@@ -196,7 +196,7 @@ class MoveGroupPythonInterface(object):
         Example : [0, -2*pi/8, 0, -2*pi/4, 0, 2*pi/6]
         @param: joint_goal       A list of floats in radian, a value per joint
         """
-        
+
         ## Planning to a Joint Goal
         ## ^^^^^^^^^^^^^^^^^^^^^^^^
         print(joint_goal)
@@ -220,14 +220,14 @@ class MoveGroupPythonInterface(object):
         Example : [0.4, 0.1, 0.4, 0, 0, 0, 1]
         @param: pose       A list of floats
         """
-        
+
         ## Planning to a Pose Goal
         ## ^^^^^^^^^^^^^^^^^^^^^^^
         ## We can plan a motion for this group to a desired pose for the
         ## end-effector:
         liste = pose_goal.copy()
         pose_goal = geometry_msgs.msg.Pose()
-        if len(liste)==7:
+        if len(liste) == 7:
             pose_goal.position.x = liste[0]
             pose_goal.position.y = liste[1]
             pose_goal.position.z = liste[2]
@@ -235,7 +235,7 @@ class MoveGroupPythonInterface(object):
             pose_goal.orientation.y = liste[4]
             pose_goal.orientation.z = liste[5]
             pose_goal.orientation.w = liste[6]
-        elif len(liste)==6:
+        elif len(liste) == 6:
             pose_goal.position.x = liste[0]
             pose_goal.position.y = liste[1]
             pose_goal.position.z = liste[2]
@@ -244,7 +244,7 @@ class MoveGroupPythonInterface(object):
             pose_goal.orientation.y = q[1]
             pose_goal.orientation.z = q[2]
             pose_goal.orientation.w = q[3]
-        
+
         self.move_group.set_pose_target(pose_goal)
 
         ## Now, we call the planner to compute the plan and execute it.
@@ -281,7 +281,7 @@ class MoveGroupPythonInterface(object):
         ## Python shell, set scale = 1.0.
         for i in range(len(waypoints)):
             pose_goal = geometry_msgs.msg.Pose()
-            if len(waypoints[i])==7:
+            if len(waypoints[i]) == 7:
                 pose_goal.position.x = waypoints[i][0]
                 pose_goal.position.y = waypoints[i][1]
                 pose_goal.position.z = waypoints[i][2]
@@ -289,7 +289,7 @@ class MoveGroupPythonInterface(object):
                 pose_goal.orientation.y = waypoints[i][4]
                 pose_goal.orientation.z = waypoints[i][5]
                 pose_goal.orientation.w = waypoints[i][6]
-            elif len(waypoints[i])==6:
+            elif len(waypoints[i]) == 6:
                 pose_goal.position.x = waypoints[i][0]
                 pose_goal.position.y = waypoints[i][1]
                 pose_goal.position.z = waypoints[i][2]
@@ -298,7 +298,7 @@ class MoveGroupPythonInterface(object):
                 pose_goal.orientation.y = q[1]
                 pose_goal.orientation.z = q[2]
                 pose_goal.orientation.w = q[3]
-            waypoints[i]=pose_goal
+            waypoints[i] = pose_goal
 
         # We want the Cartesian path to be interpolated at a resolution of 1 cm
         # which is why we will specify 0.01 as the eef_step in Cartesian
@@ -329,6 +329,7 @@ class MoveGroupPythonInterface(object):
         ## first waypoint in the `RobotTrajectory`_ or ``execute()`` will fail
         ## END_SUB_TUTORIAL
 
+
 def main():
     try:
         print("")
@@ -340,10 +341,9 @@ def main():
         print("Setting up the moveit_commander ...")
         tutorial = MoveGroupPythonInterface()
 
-
         input("============ Press `Enter` to execute a movement using a joint state goal ...")
         print("go_to_joint_state([0, -2*pi/8, 0, -2*pi/4, 0, 2*pi/6])")
-        tutorial.go_to_joint_state([0, -2*pi/8, 0, -2*pi/4, 0, 2*pi/6])
+        tutorial.go_to_joint_state([0, -2 * pi / 8, 0, -2 * pi / 4, 0, 2 * pi / 6])
 
         # input("============ Press `Enter` to execute a movement using a pose goal ...")
         # print("go_to_pose_goal([0, -0.8, 0, -1.6, 0, 1]))")
@@ -358,7 +358,7 @@ def main():
 
         # input("============ Press `Enter` to execute a saved path ...")
         # tutorial.execute_plan(cartesian_plan)
-        
+
     except rospy.ROSInterruptException:
         return
     except KeyboardInterrupt:

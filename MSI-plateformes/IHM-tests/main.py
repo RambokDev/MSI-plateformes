@@ -23,8 +23,13 @@ y_coef = 1 + 0.01835
 y_offset = (-0.35) / 10  # en cm
 z_offset = 0.5
 board_vector = [-0.64961, -0.15675, -0.45695, 0.00086, 0.00434, 0.00028]
-
+# board_vector = [-0.66159,-0.08739,-0.46456,0.004,0.005,0.006]
 lines_coef = np.load(f'{os.getcwd()}/CalibrationRobot/up_and_down_img_folder/lines_coef.npy')
+
+# lines_coef = np.load(f'{os.getcwd()}/camera_calibration/up_and_down_img_folder/lines_coef.npy')
+i, j, image_circle, image_vierge = 0, 0, 0, 0
+
+from math import sin, cos
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -39,7 +44,6 @@ class Ui(QtWidgets.QMainWindow):
 
         self.robot_interface.move_group.set_pose_reference_frame("base")
 
-
         self.take_image.clicked.connect(self.show_image)
         self.quit_button.clicked.connect(QApplication.instance().quit)
         # self.setGeometry(0, 0, 1920, 1080)
@@ -47,6 +51,9 @@ class Ui(QtWidgets.QMainWindow):
         self.showMaximized()
         self.filename = None
         self.show()
+
+        current = self.robot_interface.move_group.get_current_pose()
+        print("my current pose", current)
 
     def camera_basler(self):
 
@@ -67,7 +74,7 @@ class Ui(QtWidgets.QMainWindow):
 
         if camera.IsGrabbing():
             print(self.PIN_CAM_DEVRACAGE)
-            self.set_io_interface(1, self.PIN_CAM_DEVRACAGE, self.ON)
+            self.set_io_interface(1, self.PIN_CAM_DEVRACAGE, self.OFF)
 
             grab = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
             # grab = camera.RetrieveResult(2000, pylon.TimeoutHandling_Return)
@@ -92,14 +99,14 @@ class Ui(QtWidgets.QMainWindow):
         print("=====Display image =====")
         img_name = self.camera_basler()
         # self.image.resize(1385, 1000)
-        self.image.setFixedSize(1385, 1000)
+        self.image.setFixedSize(1385, 923)
 
         ratio, width, height = self.compute_ratio()
 
         image = cv2.imread(img_name)
-        # image = imutils.resize(image, width=1385)
+        # image2 = imutils.resize(image, width=1385)
 
-        image = cv2.resize(image, (int(ratio * width), int(ratio * height)))
+        image = cv2.resize(image, (round(ratio * width), round(ratio * height)))
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         height, width, channels = image.shape
         print(height, width, channels)
@@ -115,6 +122,7 @@ class Ui(QtWidgets.QMainWindow):
 
         W = self.image.width()
         H = self.image.height()
+        # H = 923
         self.imageDeBase = cv2.imread(self.filename)
 
         width = size(self.imageDeBase, 1)
@@ -129,24 +137,67 @@ class Ui(QtWidgets.QMainWindow):
         ratio, width, height = self.compute_ratio()
         print(ratio)
         print("coordinates in IHM picture: ", x, y)
-        realX = int(x / ratio)
-        realY = int(y / ratio)
-        print("coordinates in Real Cemera size : ", realX, realY)
+        realX = round(x / ratio)
+        realY = round(y / ratio)
+        print(realX,realY)
+        # realX = 0
+        # realY = 0
+        # print("coordinates in Real Cemera size : ", realX2, realY2)
 
         start_pt, vect = self.compute_trajectory(realX, realY, 40)
         print(start_pt, vect)
         print('start : ', start_pt)
         print('vect : ', vect)
-        robot_command = self.mise_en_forme_commande_vecteur(start_pt, vect)
-        self.go_to_position(robot_command)
+        robot_command, vector = self.mise_en_forme_commande_vecteur(start_pt, vect)
+        self.go_to_position(robot_command, vector)
 
-    def go_to_position(self, robot_command):
-        print(robot_command)
-        print(f"Frame before : {self.robot_interface.move_group.get_pose_reference_frame()}")
-        print(self.robot_interface.move_group.get_current_state().joint_state.position)
+    def go_to_position(self, robot_command, vector):
+        print(robot_command, vector)
+        # robot_command = [-0.6179846576602167, 0.000418113766730972, -0.05194822471506214, 3.14, 0, 0]
         self.robot_interface.go_to_pose_goal(robot_command)
-        print(f"Frame after: {self.robot_interface.move_group.get_pose_reference_frame()}")
-        print(self.robot_interface.move_group.get_current_state().joint_state.position)
+        # vector = [0.9850757925073026, 0.6215707372015888, -40.00413270592923]
+        pos_pump = self.robot_interface.move_group.get_current_pose()
+        pos_pump.pose.position.x += vector[0] * 0.01
+        pos_pump.pose.position.y += vector[1] * 0.01
+        pos_pump.pose.position.z += vector[2] * 0.01
+        # pos_pump.header.frame_id = "board"
+        # self.robot_interface.move_group.set_pose_reference_frame("board")
+
+        # pos_pump2 = [pos_pump.pose.position.x, pos_pump.pose.position.y, pos_pump.pose.position.z,
+        #              pos_pump.pose.orientation.x, pos_pump.pose.orientation.y, pos_pump.pose.orientation.z]
+        # self.robot_interface.go_to_pose_goal(pos_pump2)
+        print(pos_pump)
+        # self.robot_interface.move_group.set_pose_reference_frame("base_link")
+        #
+        # self.robot_interface.go_to_joint_state(functions.convert_deg_to_rad(pos_pump2))
+        print(f"Frame before : {self.robot_interface.move_group.get_pose_reference_frame()}")
+        self.robot_interface.move_group.set_pose_target(pos_pump)
+        success = self.robot_interface.move_group.go(wait=True)
+        print("state : ", success)
+        self.robot_interface.move_group.stop()
+        self.robot_interface.move_group.clear_pose_targets()
+
+        current = self.robot_interface.move_group.get_current_pose()
+        print("my current pose", current)
+
+        # print(f"Frame before : {self.robot_interface.move_group.get_pose_reference_frame()}")
+        # print(self.robot_interface.move_group.get_current_state().joint_state.position)
+        # print(f"Frame after: {self.robot_interface.move_group.get_pose_reference_frame()}")
+        # print(self.robot_interface.move_group.get_current_state().joint_state.position)
+
+        # pos_pump = self.robot_interface.move_group.get_current_pose()
+        # print(pos_pump)
+        # pos_pump.pose.position.x = vector[0]
+        # pos_pump.pose.position.y = vector[1]
+        # pos_pump.pose.orientation.z = sin(vector[2]/2.0)
+        # pos_pump.pose.orientation.w = cos(vector[2]/2.0)
+        # pos_pump.header.frame_id = 'tool0'
+        # #
+        # self.robot_interface.move_group.set_joint_value_target(pos_pump)
+        # success = self.robot_interface.move_group.go(wait=True)
+        # print("state : ", success)
+        # self.robot_interface.move_group.stop()
+        # self.robot_interface.move_group.clear_pose_targets()
 
     def mise_en_forme_commande_vecteur(self, pos_0, vect):
 
@@ -155,16 +206,16 @@ class Ui(QtWidgets.QMainWindow):
         #
         # print(f"COMMANDE : {commande}")
         # print(f"VECTEUR : {vecteur}")
-
+        vecteur = [vect[0][0], vect[1][0], vect[2][0]]
+        print(vecteur)
         data_1 = pos_0[0][0] * 0.01 + (0.0519 * (pos_0[0][0] * 0.01) + 0.0324) + 0.002
         data_2 = pos_0[1][0] * 0.01 + (0.0583 * (pos_0[1][0] * 0.01) + 0.0036) + 0.0015
 
-        # robot_command = [pos_0[0][0] * 0.01 + 0.1, pos_0[1][0] * 0.01, pos_0[2][0] * 0.01, 3.14, 0, 0]
-        # xoff = -40 * 0.001
-        # yoff = -70 * 0.001
+        # robot_command = [pos_0[0][0] * 0.01, pos_0[1][0] * 0.01, pos_0[2][0] * 0.01, 3.14, 0, 0]
+
         robot_command = [data_1, data_2, pos_0[2][0] * 0.01, 3.14, 0, 0]
 
-        return robot_command
+        return robot_command, vecteur
 
     def compute_trajectory(self, i, j, z0):
 
