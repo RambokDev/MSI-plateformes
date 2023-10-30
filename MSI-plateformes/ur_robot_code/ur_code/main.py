@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
 import rospy
 import moveit_commander
@@ -24,7 +24,7 @@ ON, OFF = 1, 0
 
 # 'pos_vol': [-38.46, -79.78, 80.27, -90.46, -89.70, 85.17],
 
-dictionnaire_joints = {'pos_vol': [-38.46, -79.78, 80.27, -90.46, -89.70, 85.17],
+dictionnaire_joints = {'pos_vol': [-38.34, -74.03, 101.03, -116.91, -89.65, 51.96],
                        'pos_camera': [-74.08, -59.14, 82.87, -204.37, -16.88, 124.22],
                        'pos_camera_in': [-62.23, -48.79, 65.60, -197.19, -28.71, 124.01],
                        'pos_goulotte': [-61.10, -34.06, 70.87, -217.17, -29.96, 123.91, ],

@@ -139,7 +139,7 @@ class Ui(QtWidgets.QMainWindow):
         print("coordinates in IHM picture: ", x, y)
         realX = round(x / ratio)
         realY = round(y / ratio)
-        print(realX,realY)
+        print(realX, realY)
         # realX = 0
         # realY = 0
         # print("coordinates in Real Cemera size : ", realX2, realY2)
@@ -153,9 +153,17 @@ class Ui(QtWidgets.QMainWindow):
 
     def go_to_position(self, robot_command, vector):
         print(robot_command, vector)
-        # robot_command = [-0.6179846576602167, 0.000418113766730972, -0.05194822471506214, 3.14, 0, 0]
+        # center
+        robot_command = [-0.6179846576602167, 0.000418113766730972, -0.05194822471506214, 3.14, 0, 0]
+        # top
+        # robot_command = [-0.679958428096283, 0.10701808485686919, -0.05158763753667969, 3.14, 0, 0]
+        current = self.robot_interface.move_group.get_current_pose()
+        print("my current pose", current)
         self.robot_interface.go_to_pose_goal(robot_command)
-        # vector = [0.9850757925073026, 0.6215707372015888, -40.00413270592923]
+        # center
+        vector = [0.9850757925073026, 0.6215707372015888, -40.00413270592923]
+        # top
+        # vector = [-1.2294967876325416, 4.629427148554978, -39.991076787939974]
         pos_pump = self.robot_interface.move_group.get_current_pose()
         pos_pump.pose.position.x += vector[0] * 0.01
         pos_pump.pose.position.y += vector[1] * 0.01
@@ -170,6 +178,7 @@ class Ui(QtWidgets.QMainWindow):
         # self.robot_interface.move_group.set_pose_reference_frame("base_link")
         #
         # self.robot_interface.go_to_joint_state(functions.convert_deg_to_rad(pos_pump2))
+
         print(f"Frame before : {self.robot_interface.move_group.get_pose_reference_frame()}")
         self.robot_interface.move_group.set_pose_target(pos_pump)
         success = self.robot_interface.move_group.go(wait=True)
@@ -206,10 +215,10 @@ class Ui(QtWidgets.QMainWindow):
         #
         # print(f"COMMANDE : {commande}")
         # print(f"VECTEUR : {vecteur}")
+        print(pos_0)
         vecteur = [vect[0][0], vect[1][0], vect[2][0]]
-        print(vecteur)
-        data_1 = pos_0[0][0] * 0.01 + (0.0519 * (pos_0[0][0] * 0.01) + 0.0324) + 0.002
-        data_2 = pos_0[1][0] * 0.01 + (0.0583 * (pos_0[1][0] * 0.01) + 0.0036) + 0.0015
+        data_1 = (pos_0[0][0] * 0.01) + ((0.0519 * (pos_0[0][0] * 0.01)) + 0.0324) + 0.002
+        data_2 = (pos_0[1][0] * 0.01) + ((0.0583 * (pos_0[1][0] * 0.01)) + 0.0036) + 0.0015
 
         # robot_command = [pos_0[0][0] * 0.01, pos_0[1][0] * 0.01, pos_0[2][0] * 0.01, 3.14, 0, 0]
 
@@ -239,7 +248,6 @@ class Ui(QtWidgets.QMainWindow):
         start_pt = np.dot(board_rot, start_pt) + board_trans
 
         vect = end_pt - start_pt
-
         # start_pt = np.array([[(start_pt[0][0] - 0.0066) * (1 - 0.01815)], [(start_pt[1][0] - 0.03505) * (1 + 0.01845)]])
 
         return start_pt, vect
