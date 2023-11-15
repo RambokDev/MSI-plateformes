@@ -31,20 +31,17 @@ jobs:
           python -m pip install -U sphinx
           python -m pip install sphinx-rtd-theme
 
-#      - name: make the sphinx docs
-#        run: |
-#          make -C docs clean
-#          make -C docs html
-##
-#      - name: Init new repo in dist folder and commit
-#        run: |
-#          cd docs/build/html/
-#          git init
-#          touch .nojekyll
-#          git add -A
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#          git commit -m 'deploy'
+      - name: make the sphinx docs
+        run: |
+          make -C docs clean
+          make -C docs html
+#
+      - name: Init new repo in dist folder and commit
+        run: |
+          cd docs/build/html/
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -a -m 'deploy'
 
 
 
@@ -54,5 +51,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           force: true
-          repository: MSI-plateformes/docs/build/html
+          directory: ./docs/build/html
 
