@@ -47,10 +47,6 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -m 'deploy'
 
-      - name: directory
-        run: ls /docs/build/html/
-
-
 
 
       - name: Force push to destination branch
