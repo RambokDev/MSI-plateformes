@@ -48,7 +48,7 @@ jobs:
           git commit -m 'deploy'
 
       - name: directory
-        run: ls
+        run: ls /docs/build/html/
 
 
 
