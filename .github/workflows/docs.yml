@@ -35,7 +35,7 @@ jobs:
         run: |
           make -C docs clean
           make -C docs html
-#
+
       - name: Init new repo in dist folder and commit
         run: |
           cd docs/build/html/
@@ -44,7 +44,7 @@ jobs:
           git add -A
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -a -m 'deploy'
+          git commit -m 'deploy'
 
 
 
@@ -54,5 +54,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           force: true
-          directory: ./docs/build/html
+          directory: ./docs/build/
 
