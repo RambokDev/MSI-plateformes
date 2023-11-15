@@ -10,8 +10,8 @@ Welcome to MSI-plateformes's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
    intro
+   ur
 
 Indices and tables
 ==================
