@@ -38,7 +38,7 @@ jobs:
 
       - name: Init new repo in dist folder and commit
         run: |
-          cd docs/build/
+          cd docs/build/html/
           git init
           touch .nojekyll
           git add -A
@@ -54,5 +54,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           force: true
-          directory: ./docs/build/
+          directory: ./docs/build/html
 
