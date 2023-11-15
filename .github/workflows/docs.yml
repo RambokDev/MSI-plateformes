@@ -54,5 +54,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           force: true
-          repository: ./docs/build/html
+          repository: MSI-plateformes/docs/build/html
 
