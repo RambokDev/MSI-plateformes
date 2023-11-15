@@ -34,6 +34,7 @@ jobs:
       - name: make the sphinx docs
         run: |
           make -C docs clean
+          sphinx-apidoc -o ./docs/source ./robot
           make -C docs html
 #
       - name: Init new repo in dist folder and commit

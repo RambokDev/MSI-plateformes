@@ -2,8 +2,8 @@
 import rospy
 import geometry_msgs.msg as geometry_msgs
 
-from ur.external.contact_sensor import contact_sensor
-from ur.commands.ur_commands import RobotUR
+from robot.ur.external.contact_sensor import contact_sensor
+from robot.ur.commands.ur_commands import RobotUR
 import threading
 
 

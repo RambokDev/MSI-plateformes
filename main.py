@@ -13,9 +13,9 @@ import os
 from pypylon import pylon
 from numpy import size
 import geometry_msgs.msg as geometry_msgs
-from ur.commands.ur_commands import RobotUR
+from robot.ur.commands.ur_commands import RobotUR
 from sensor_loop import sensor_loop
-from ur.commands.robot_state import set_robot_state
+from robot.ur.commands.robot_state import set_robot_state
 from robot.ur.commands.robot_connexion import connexion_state
 
 x_coef = 1 - 0.0182
@@ -24,7 +24,7 @@ y_coef = 1 + 0.01835
 y_offset = (-0.35) / 10  # en cm
 z_offset = 0.5
 board_vector = [-0.64961, -0.15675, -0.45695, 0.00086, 0.00434, 0.00028]
-lines_coef = np.load(f'{os.getcwd()}/ur/ihm_tests/CalibrationRobot/up_and_down_img_folder/lines_coef.npy')
+lines_coef = np.load(f'{os.getcwd()}/robot/ur/ihm_tests/CalibrationRobot/up_and_down_img_folder/lines_coef.npy')
 i, j, image_circle, image_vierge = 0, 0, 0, 0
 
 
@@ -32,7 +32,7 @@ class Ui(QtWidgets.QMainWindow, ):
     def __init__(self):
         super(Ui, self).__init__()
         self.imageDeBase = None
-        uic.loadUi(f'{os.getcwd()}/ur/ihm_tests/ui/main.ui', self)
+        uic.loadUi(f'{os.getcwd()}/robot/ur/ihm_tests/ui/main.ui', self)
         rospy.init_node("test_robotUR")
 
         self.myRobot = None
@@ -129,7 +129,7 @@ class Ui(QtWidgets.QMainWindow, ):
             if grab.GrabSucceeded():
                 img = pylon.PylonImage()
                 img.AttachGrabResultBuffer(grab)
-                self.filename = "ur/ihm_tests/images/saved_pypylon_img_{}.png".format(type_camera)
+                self.filename = "robot/ur/ihm_tests/images/saved_pypylon_img_{}.png".format(type_camera)
                 img.Save(pylon.ImageFileFormat_Png, self.filename)
                 self.set_io_interface(1, light, self.OFF)
                 return self.filename
