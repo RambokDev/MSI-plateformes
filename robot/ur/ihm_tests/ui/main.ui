@@ -143,13 +143,6 @@ color:white</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="brakes">
-                  <property name="text">
-                   <string>Releasing the brakes</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QPushButton" name="start_stop_connexion">
                   <property name="text">
                    <string>Start / Stop Connexion</string>
@@ -170,16 +163,16 @@ color:white</string>
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="stop_robot">
+                 <widget class="QPushButton" name="init">
                   <property name="text">
-                   <string>Stop Robot</string>
+                   <string>go to init </string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="init">
+                 <widget class="QPushButton" name="config_button">
                   <property name="text">
-                   <string>go to init </string>
+                   <string>Load Config File</string>
                   </property>
                  </widget>
                 </item>

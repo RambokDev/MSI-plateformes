@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import time
 
 import rospy
 from ur_msgs.msg import IOStates
@@ -23,6 +24,8 @@ def set_robot_state(state: bool):
 
     try:
         resp = robot_change_state()
+        if resp.success:
+            time.sleep(5)
         return resp.success, resp.message
     except rospy.ServiceException as exc:
         print("Service did not process request: " + str(exc))

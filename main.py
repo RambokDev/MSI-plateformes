@@ -3,7 +3,7 @@ import time
 import cv2
 import numpy as np
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
 import sys
 import rospy
 from PyQt5.QtGui import QPixmap, QImage
@@ -13,10 +13,11 @@ import os
 from pypylon import pylon
 from numpy import size
 import geometry_msgs.msg as geometry_msgs
-from robot.ur.commands.ur_commands import RobotUR
-from sensor_loop import sensor_loop
+from robot.ur.external.sensor_loop import sensor_loop
 from robot.ur.commands.robot_state import set_robot_state
-from robot.ur.commands.robot_connexion import connexion_state
+from robot.ur.commands.reverse_connexion import connexion_state
+import atexit
+from robot.ur.commands.start_ros_config import load_ros_config
 
 x_coef = 1 - 0.0182
 x_offset = (-0.0658) / 10  # en cm
@@ -47,6 +48,7 @@ class Ui(QtWidgets.QMainWindow, ):
         self.go_to_box.clicked.connect(self.go_to_box_traj)
         self.stop_robot.clicked.connect(lambda: self.robot_activation(False))
         self.brakes.clicked.connect(lambda: self.robot_activation(True))
+        self.config_button.clicked.connect(self.getfiles)
         self.quit_button.clicked.connect(QApplication.instance().quit)
         self.init.clicked.connect(lambda: self.myRobot.go_to_initial_position(10))
         self.start_stop_connexion.clicked.connect(self.robot_connexion)
@@ -57,22 +59,39 @@ class Ui(QtWidgets.QMainWindow, ):
         # self.slider_angle.valueChanged.connect(self.slider_state)
         self.show()
 
+    def exit_handler():
+        print('Stop Connexion')
+        connexion_state(False)
+        exit()
+
+
+    def getfiles(self):
+        dlg = QFileDialog()
+        dlg.setFileMode(QFileDialog.AnyFile)
+        # dlg.setFilter("Text files (*.txt)")
+
+        if dlg.exec_():
+            filename = dlg.selectedFiles()
+            load_ros_config(filename[0])
+
+
+
     def robot_connexion(self):
         if self.robot_connexion_state == False:
-            success, message = connexion_state(True)
+            success, message, robot = connexion_state(True)
             if success:
                 self.robot_connexion_state = True
                 self.state_connexion_robot.setText("Connected")
                 self.state_connexion_robot.setStyleSheet("background-color: green;padding :15px;color:white")
-                time.sleep(5)
-                self.myRobot = RobotUR()
+                self.myRobot = robot
             else:
                 self.pop_up_screen(message)
         else:
-            success, message = connexion_state(False)
+            success, message, robot = connexion_state(False)
             if success:
                 self.robot_connexion_state = False
                 self.state_connexion_robot.setText("Disconnected")
+                self.myRobot = None
                 self.state_connexion_robot.setStyleSheet("background-color: red;padding :15px;color:white")
 
             else:
@@ -258,7 +277,7 @@ class Ui(QtWidgets.QMainWindow, ):
         # self.go_to_camera()
         self.myRobot.go_to_pose(geometry_msgs.Pose(
             geometry_msgs.Vector3(robot_command[0], robot_command[1], robot_command[2]),
-            RobotUR.tool_down_pose
+            self.myRobot.tool_down_pose
         ))
         if self.sensor_contact != 1:
             self.set_io_interface(1, self.PIN_VENTURI_VIDE, self.ON)
@@ -272,7 +291,7 @@ class Ui(QtWidgets.QMainWindow, ):
         camera_command = [-0.883, 0.775, 0.594]
         self.myRobot.go_to_pose(geometry_msgs.Pose(
             geometry_msgs.Vector3(camera_command[0], camera_command[1], camera_command[2]),
-            RobotUR.tool_horizontal_pose_camera
+            self.myRobot.tool_horizontal_pose_camera
         ))
 
     def formatting_commands(self, pos_0, vect):
@@ -319,6 +338,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     window = Ui()
     app.exec_()
+    atexit.register(Ui.exit_handler)
 
 
 if __name__ == '__main__':
