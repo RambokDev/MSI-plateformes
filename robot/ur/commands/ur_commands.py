@@ -47,22 +47,17 @@ CARTESIAN_TRAJECTORY_CONTROLLERS = [
 CONFLICTING_CONTROLLERS = ["joint_group_vel_controller", "twist_controller"]
 
 
-# Use this class to drive a Universal Robot with ROS
-# First, run the communication between the robot and ROS :
-# roslaunch raiv_libraries ur3_bringup_cartesian.launch robot_ip:=10.31.56.102 kinematics_config:=${HOME}/Calibration/ur3_calibration.yaml
-# roslaunch raiv_libraries ur10e_bringup_cartesian.launch robot_ip:=169.254.38.55 kinematics_config:=${HOME}/Calibration/ur10e_calibration.yaml
-# Then, run this node :
-# rosrun raiv_libraries robotUR.py
-
 class RobotUR(object):
     tool_horizontal_pose_camera = geometry_msgs.Quaternion(0.5, -0.5, -0.5, 0.5)
     # tool_horizontal_pose_camera = geometry_msgs.Quaternion(0.11898204965893977, -0.6505392050312628, -0.11898204965893977, 0.7405979249465989)
     # tool_horizontal_pose_camera = geometry_msgs.Quaternion(-0.7, -0.027, -0.7, -0.024)
     # tool_down_pose = geometry_msgs.Quaternion(1., 0., 0., 0.)  # The tool is down, ready to grasp an object
-    tool_down_pose = geometry_msgs.Quaternion(0.9999996829318346, 0.0, 0.0, 0.0007963267107332633)  # The tool is down, ready to grasp an object
+    tool_down_pose = geometry_msgs.Quaternion(0.9999996829318346, 0.0, 0.0,
+                                              0.0007963267107332633)  # The tool is down, ready to grasp an object
     tool_horizontal_pose = geometry_msgs.Quaternion(0.5, 0.5, 0.5,
                                                     0.5)  # Pose with the ArUco code up and the tool in horizontal position
     cartesian_controller = "pose_based_cartesian_traj_controller/follow_cartesian_trajectory"
+
     # Vector3(-0.731, 0.356, -0.042)
     def __init__(self, initial_pose=geometry_msgs.Pose(geometry_msgs.Vector3(-0.731, 0.356, 0.357), tool_down_pose)):
         super(RobotUR, self).__init__()
@@ -85,7 +80,8 @@ class RobotUR(object):
 
     def go_to_initial_position(self, duration=2):
         # self.go_to_pose(self.initial_pose, duration)
-        self.go_to_pose(self.initial_pose, duration)
+        success, message = self.go_to_pose(self.initial_pose, duration)
+        return success, message
 
     def go_to_xyz_position(self, x, y, z, duration=2, orientation=None):
         """ Go to the x,y,z position with an orientation Quaternion (default : tool frame pointing down) """
@@ -102,7 +98,8 @@ class RobotUR(object):
         """
         point = CartesianTrajectoryPoint()
         point.pose = pose
-        self._go_to_this_point(point, duration)
+        success, message = self._go_to_this_point(point, duration)
+        return success, message
 
     def go_to_position(self, position, duration=2):
         """
@@ -133,7 +130,8 @@ class RobotUR(object):
         new_pose.position.x += x
         new_pose.position.y += y
         new_pose.position.z += z
-        self.go_to_pose(new_pose)
+        success, message = self.go_to_pose(new_pose)
+        return success, message
 
     def get_current_pose(self):
         """ Return the current pose (translation + quaternion), type = geometry_msgs.Pose """
@@ -146,9 +144,9 @@ class RobotUR(object):
         goal = FollowCartesianTrajectoryGoal()
         goal.trajectory.header.frame_id = "base"
         goal.trajectory.points.append(point)
-        print(goal)
-
-        self._execute_trajectory(goal)
+        # print(goal)
+        success, message = self._execute_trajectory(goal)
+        return success, message
 
     def _execute_trajectory(self, goal):
 
@@ -157,6 +155,14 @@ class RobotUR(object):
         self.trajectory_client.wait_for_result()
         result = self.trajectory_client.get_result()
         rospy.loginfo("Trajectory execution finished in state {}".format(result.error_code))
+        if result.error_code == 0:
+            success = True
+            message = "Success"
+            return success, message
+        elif result.error_code == 1:
+            success = False
+            message = result.error_message
+            return success, message
 
     def _update_current_pose(self, data):
         t = data.transforms[0].transform
@@ -209,12 +215,11 @@ class RobotUR(object):
             res.append(i * pi / 180)
         return res
 
-
     def switch_controler_robot(self, target):
         self._switch_controller(target)
 
     # def activate_controller_joint(self):
-        # self._switch_controller(self, "pos_joint_traj_controller")
+    # self._switch_controller(self, "pos_joint_traj_controller")
 
     #     switch_controller = rospy.ServiceProxy('/controller_manager/switch_controller', SwitchController)
     #     controller_to_start = 'pos_joint_traj_controller'

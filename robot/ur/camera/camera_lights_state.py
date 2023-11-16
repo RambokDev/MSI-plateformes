@@ -5,7 +5,6 @@ from ur_msgs.srv import SetIO
 
 PIN_CAM_DEVRACAGE = 5
 PIN_CAM_ORIENTATION = 4
-ON, OFF = 1, 0
 
 
 def camera_lights_state(camera_type, state):
@@ -18,8 +17,9 @@ def camera_lights_state(camera_type, state):
     else:
         light = PIN_CAM_DEVRACAGE
         print("Devracage Activation light")
-        set_io_interface(0, light, state)
+        set_io_interface(1, light, state)
 
 
 if __name__ == '__main__':
+    ON, OFF = 1, 0
     camera_lights_state(1, ON)
