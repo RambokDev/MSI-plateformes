@@ -11,7 +11,6 @@ Welcome to MSI-plateformes's documentation!
    :caption: Contents:
 
    intro
-   ur
    modules
 
 Indices and tables

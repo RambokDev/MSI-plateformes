@@ -1,5 +1,8 @@
-robot package
+robot packages
 =============
+
+In this section you will find every things concerning the differents packages ``Ur packages`` and
+``Fanuc packages``
 
 Subpackages
 -----------
@@ -8,11 +11,5 @@ Subpackages
    :maxdepth: 4
 
    robot.ur
+   robot.fanuc
 
-Module contents
----------------
-
-.. automodule:: robot
-   :members:
-   :undoc-members:
-   :show-inheritance:

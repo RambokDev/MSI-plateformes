@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>robot.ur package &mdash; MSI-plateformes 0.0.1 documentation</title>
+  <title>UR10e package &mdash; MSI-plateformes 0.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,7 +18,9 @@
         <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="robot.ur.commands package" href="robot.ur.commands.html" />
+    <link rel="prev" title="robot packages" href="robot.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,10 +43,19 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ur.html">ur package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">robot</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="robot.html">robot packages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="robot.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">UR10e package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.fanuc.html">Fanuc package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -61,7 +72,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">robot.ur package</li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+          <li class="breadcrumb-item"><a href="robot.html">robot packages</a></li>
+      <li class="breadcrumb-item active">UR10e package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/robot.ur.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -71,30 +84,85 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="robot-ur-package">
-<h1>robot.ur package<a class="headerlink" href="#robot-ur-package" title="Permalink to this heading"></a></h1>
+  <section id="ur10e-package">
+<h1>UR10e package<a class="headerlink" href="#ur10e-package" title="Permalink to this heading"></a></h1>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="robot.ur.commands.html">robot.ur.commands package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-get-robot-mode-module">robot.ur.commands.get_robot_mode module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-radians-to-quaternions-module">robot.ur.commands.radians_to_quaternions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-reverse-connexion-module">robot.ur.commands.reverse_connexion module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-robot-gripper-module">robot.ur.commands.robot_gripper module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-robot-speed-module">robot.ur.commands.robot_speed module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-robot-state-module">robot.ur.commands.robot_state module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-start-ros-config-module">robot.ur.commands.start_ros_config module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#robot-ur-commands-ur-commands-module">robot.ur.commands.ur_commands module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.get_robot_mode">robot.ur.commands.get_robot_mode module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.get_robot_mode.GetRobotModeThread"><code class="docutils literal notranslate"><span class="pre">GetRobotModeThread</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.get_robot_mode.GetRobotModeThread.run"><code class="docutils literal notranslate"><span class="pre">GetRobotModeThread.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.get_robot_mode.get_robot_mode"><code class="docutils literal notranslate"><span class="pre">get_robot_mode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.get_robot_mode.get_robot_mode_ros"><code class="docutils literal notranslate"><span class="pre">get_robot_mode_ros()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.radians_to_quaternions">robot.ur.commands.radians_to_quaternions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.radians_to_quaternions.get_quaternion_from_euler"><code class="docutils literal notranslate"><span class="pre">get_quaternion_from_euler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.reverse_connexion">robot.ur.commands.reverse_connexion module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.reverse_connexion.connexion_state"><code class="docutils literal notranslate"><span class="pre">connexion_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.robot_gripper">robot.ur.commands.robot_gripper module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.robot_gripper.talker"><code class="docutils literal notranslate"><span class="pre">talker()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.robot_speed">robot.ur.commands.robot_speed module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.robot_speed.speed_state"><code class="docutils literal notranslate"><span class="pre">speed_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.robot_state">robot.ur.commands.robot_state module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.robot_state.set_robot_state"><code class="docutils literal notranslate"><span class="pre">set_robot_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.start_ros_config">robot.ur.commands.start_ros_config module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.start_ros_config.load_ros_config"><code class="docutils literal notranslate"><span class="pre">load_ros_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.start_ros_config.start_ros_config"><code class="docutils literal notranslate"><span class="pre">start_ros_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands.ur_commands">robot.ur.commands.ur_commands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR"><code class="docutils literal notranslate"><span class="pre">RobotUR</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.cartesian_controller"><code class="docutils literal notranslate"><span class="pre">RobotUR.cartesian_controller</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.convert_deg_to_rad"><code class="docutils literal notranslate"><span class="pre">RobotUR.convert_deg_to_rad()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.execute_cartesian_trajectory"><code class="docutils literal notranslate"><span class="pre">RobotUR.execute_cartesian_trajectory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.get_current_pose"><code class="docutils literal notranslate"><span class="pre">RobotUR.get_current_pose()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.go_to_initial_position"><code class="docutils literal notranslate"><span class="pre">RobotUR.go_to_initial_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.go_to_pose"><code class="docutils literal notranslate"><span class="pre">RobotUR.go_to_pose()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.go_to_position"><code class="docutils literal notranslate"><span class="pre">RobotUR.go_to_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.go_to_xyz_position"><code class="docutils literal notranslate"><span class="pre">RobotUR.go_to_xyz_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.relative_move"><code class="docutils literal notranslate"><span class="pre">RobotUR.relative_move()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.send_joint_trajectory"><code class="docutils literal notranslate"><span class="pre">RobotUR.send_joint_trajectory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.switch_controler_robot"><code class="docutils literal notranslate"><span class="pre">RobotUR.switch_controler_robot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.tool_down_pose"><code class="docutils literal notranslate"><span class="pre">RobotUR.tool_down_pose</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.tool_horizontal_pose"><code class="docutils literal notranslate"><span class="pre">RobotUR.tool_horizontal_pose</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot.ur.commands.html#robot.ur.commands.ur_commands.RobotUR.tool_horizontal_pose_camera"><code class="docutils literal notranslate"><span class="pre">RobotUR.tool_horizontal_pose_camera</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.commands.html#module-robot.ur.commands">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="robot.ur.external.html">robot.ur.external package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="robot.ur.external.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.external.html#robot-ur-external-contact-sensor-module">robot.ur.external.contact_sensor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.external.html#robot-ur-external-sensor-loop-module">robot.ur.external.sensor_loop module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robot.ur.external.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.external.html#module-robot.ur.external.contact_sensor">robot.ur.external.contact_sensor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.external.html#robot.ur.external.contact_sensor.contact_sensor"><code class="docutils literal notranslate"><span class="pre">contact_sensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.external.html#module-robot.ur.external.sensor_loop">robot.ur.external.sensor_loop module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.external.html#robot.ur.external.sensor_loop.go_to_position"><code class="docutils literal notranslate"><span class="pre">go_to_position()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.external.html#robot.ur.external.sensor_loop.sensor_loop"><code class="docutils literal notranslate"><span class="pre">sensor_loop()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.external.html#robot.ur.external.sensor_loop.thread_function1"><code class="docutils literal notranslate"><span class="pre">thread_function1()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot.ur.external.html#robot.ur.external.sensor_loop.thread_function2"><code class="docutils literal notranslate"><span class="pre">thread_function2()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot.ur.external.html#module-robot.ur.external">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -103,21 +171,54 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
-<section id="robot-ur-main-robot-connexion-module">
-<h2>robot.ur.main_robot_connexion module<a class="headerlink" href="#robot-ur-main-robot-connexion-module" title="Permalink to this heading"></a></h2>
+<section id="module-robot.ur.main_robot_connexion">
+<span id="robot-ur-main-robot-connexion-module"></span><h2>robot.ur.main_robot_connexion module<a class="headerlink" href="#module-robot.ur.main_robot_connexion" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="robot.ur.main_robot_connexion.robot_connexion">
+<span class="sig-prename descclassname"><span class="pre">robot.ur.main_robot_connexion.</span></span><span class="sig-name descname"><span class="pre">robot_connexion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robot/ur/main_robot_connexion.html#robot_connexion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robot.ur.main_robot_connexion.robot_connexion" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="robot-ur-main-robot-trajectory-module">
-<h2>robot.ur.main_robot_trajectory module<a class="headerlink" href="#robot-ur-main-robot-trajectory-module" title="Permalink to this heading"></a></h2>
+<section id="module-robot.ur.main_robot_trajectory">
+<span id="robot-ur-main-robot-trajectory-module"></span><h2>robot.ur.main_robot_trajectory module<a class="headerlink" href="#module-robot.ur.main_robot_trajectory" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="robot.ur.main_robot_trajectory.articular_trajectory">
+<span class="sig-prename descclassname"><span class="pre">robot.ur.main_robot_trajectory.</span></span><span class="sig-name descname"><span class="pre">articular_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robot/ur/main_robot_trajectory.html#articular_trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robot.ur.main_robot_trajectory.articular_trajectory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="robot.ur.main_robot_trajectory.cartesian_trajectory">
+<span class="sig-prename descclassname"><span class="pre">robot.ur.main_robot_trajectory.</span></span><span class="sig-name descname"><span class="pre">cartesian_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">move</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robot/ur/main_robot_trajectory.html#cartesian_trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robot.ur.main_robot_trajectory.cartesian_trajectory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="robot.ur.main_robot_trajectory.robot_create_quaternions">
+<span class="sig-prename descclassname"><span class="pre">robot.ur.main_robot_trajectory.</span></span><span class="sig-name descname"><span class="pre">robot_create_quaternions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pose</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robot/ur/main_robot_trajectory.html#robot_create_quaternions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robot.ur.main_robot_trajectory.robot_create_quaternions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="robot.ur.main_robot_trajectory.robot_get_info">
+<span class="sig-prename descclassname"><span class="pre">robot.ur.main_robot_trajectory.</span></span><span class="sig-name descname"><span class="pre">robot_get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">robot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robot/ur/main_robot_trajectory.html#robot_get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robot.ur.main_robot_trajectory.robot_get_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="robot.ur.main_robot_trajectory.robot_trajectory">
+<span class="sig-prename descclassname"><span class="pre">robot.ur.main_robot_trajectory.</span></span><span class="sig-name descname"><span class="pre">robot_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">robot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">move</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'down'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robot/ur/main_robot_trajectory.html#robot_trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robot.ur.main_robot_trajectory.robot_trajectory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="module-robot.ur">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-robot.ur" title="Permalink to this heading"></a></h2>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="robot.html" class="btn btn-neutral float-left" title="robot packages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="robot.ur.commands.html" class="btn btn-neutral float-right" title="robot.ur.commands package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

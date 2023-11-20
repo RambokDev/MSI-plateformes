@@ -1,7 +1,8 @@
-robot
+Modules
 =====
 
 .. toctree::
    :maxdepth: 4
 
-   ur
+   robot
+
