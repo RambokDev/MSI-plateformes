@@ -120,22 +120,17 @@
 <span class="n">CONFLICTING_CONTROLLERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;joint_group_vel_controller&quot;</span><span class="p">,</span> <span class="s2">&quot;twist_controller&quot;</span><span class="p">]</span>
 
 
-<span class="c1"># Use this class to drive a Universal Robot with ROS</span>
-<span class="c1"># First, run the communication between the robot and ROS :</span>
-<span class="c1"># roslaunch raiv_libraries ur3_bringup_cartesian.launch robot_ip:=10.31.56.102 kinematics_config:=${HOME}/Calibration/ur3_calibration.yaml</span>
-<span class="c1"># roslaunch raiv_libraries ur10e_bringup_cartesian.launch robot_ip:=169.254.38.55 kinematics_config:=${HOME}/Calibration/ur10e_calibration.yaml</span>
-<span class="c1"># Then, run this node :</span>
-<span class="c1"># rosrun raiv_libraries robotUR.py</span>
-
 <div class="viewcode-block" id="RobotUR"><a class="viewcode-back" href="../../../ur.commands.html#ur.commands.ur_commands.RobotUR">[docs]</a><span class="k">class</span> <span class="nc">RobotUR</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">tool_horizontal_pose_camera</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
     <span class="c1"># tool_horizontal_pose_camera = geometry_msgs.Quaternion(0.11898204965893977, -0.6505392050312628, -0.11898204965893977, 0.7405979249465989)</span>
     <span class="c1"># tool_horizontal_pose_camera = geometry_msgs.Quaternion(-0.7, -0.027, -0.7, -0.024)</span>
     <span class="c1"># tool_down_pose = geometry_msgs.Quaternion(1., 0., 0., 0.)  # The tool is down, ready to grasp an object</span>
-    <span class="n">tool_down_pose</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">(</span><span class="mf">0.9999996829318346</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0007963267107332633</span><span class="p">)</span>  <span class="c1"># The tool is down, ready to grasp an object</span>
+    <span class="n">tool_down_pose</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">(</span><span class="mf">0.9999996829318346</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="mf">0.0007963267107332633</span><span class="p">)</span>  <span class="c1"># The tool is down, ready to grasp an object</span>
     <span class="n">tool_horizontal_pose</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span>
                                                     <span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Pose with the ArUco code up and the tool in horizontal position</span>
     <span class="n">cartesian_controller</span> <span class="o">=</span> <span class="s2">&quot;pose_based_cartesian_traj_controller/follow_cartesian_trajectory&quot;</span>
+
     <span class="c1"># Vector3(-0.731, 0.356, -0.042)</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_pose</span><span class="o">=</span><span class="n">geometry_msgs</span><span class="o">.</span><span class="n">Pose</span><span class="p">(</span><span class="n">geometry_msgs</span><span class="o">.</span><span class="n">Vector3</span><span class="p">(</span><span class="o">-</span><span class="mf">0.731</span><span class="p">,</span> <span class="mf">0.356</span><span class="p">,</span> <span class="mf">0.357</span><span class="p">),</span> <span class="n">tool_down_pose</span><span class="p">)):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RobotUR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -158,7 +153,8 @@
 
 <div class="viewcode-block" id="RobotUR.go_to_initial_position"><a class="viewcode-back" href="../../../ur.commands.html#ur.commands.ur_commands.RobotUR.go_to_initial_position">[docs]</a>    <span class="k">def</span> <span class="nf">go_to_initial_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
         <span class="c1"># self.go_to_pose(self.initial_pose, duration)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">go_to_pose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_pose</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span></div>
+        <span class="n">success</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">go_to_pose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_pose</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span></div>
 
 <div class="viewcode-block" id="RobotUR.go_to_xyz_position"><a class="viewcode-back" href="../../../ur.commands.html#ur.commands.ur_commands.RobotUR.go_to_xyz_position">[docs]</a>    <span class="k">def</span> <span class="nf">go_to_xyz_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Go to the x,y,z position with an orientation Quaternion (default : tool frame pointing down) &quot;&quot;&quot;</span>
@@ -175,7 +171,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">CartesianTrajectoryPoint</span><span class="p">()</span>
         <span class="n">point</span><span class="o">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">pose</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_go_to_this_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span></div>
+        <span class="n">success</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_go_to_this_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span></div>
 
 <div class="viewcode-block" id="RobotUR.go_to_position"><a class="viewcode-back" href="../../../ur.commands.html#ur.commands.ur_commands.RobotUR.go_to_position">[docs]</a>    <span class="k">def</span> <span class="nf">go_to_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -206,7 +203,8 @@
         <span class="n">new_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">x</span>
         <span class="n">new_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">y</span>
         <span class="n">new_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">z</span> <span class="o">+=</span> <span class="n">z</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">go_to_pose</span><span class="p">(</span><span class="n">new_pose</span><span class="p">)</span></div>
+        <span class="n">success</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">go_to_pose</span><span class="p">(</span><span class="n">new_pose</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span></div>
 
 <div class="viewcode-block" id="RobotUR.get_current_pose"><a class="viewcode-back" href="../../../ur.commands.html#ur.commands.ur_commands.RobotUR.get_current_pose">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Return the current pose (translation + quaternion), type = geometry_msgs.Pose &quot;&quot;&quot;</span>
@@ -219,9 +217,9 @@
         <span class="n">goal</span> <span class="o">=</span> <span class="n">FollowCartesianTrajectoryGoal</span><span class="p">()</span>
         <span class="n">goal</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s2">&quot;base&quot;</span>
         <span class="n">goal</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_execute_trajectory</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span>
+        <span class="c1"># print(goal)</span>
+        <span class="n">success</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_trajectory</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">_execute_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
 
@@ -230,6 +228,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_client</span><span class="o">.</span><span class="n">wait_for_result</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_client</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
         <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s2">&quot;Trajectory execution finished in state </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">error_code</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">error_code</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Success&quot;</span>
+            <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span>
+        <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">error_code</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">error_message</span>
+            <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">_update_current_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">transforms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span>
@@ -282,12 +288,11 @@
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-
 <div class="viewcode-block" id="RobotUR.switch_controler_robot"><a class="viewcode-back" href="../../../ur.commands.html#ur.commands.ur_commands.RobotUR.switch_controler_robot">[docs]</a>    <span class="k">def</span> <span class="nf">switch_controler_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_switch_controller</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></div>
 
     <span class="c1"># def activate_controller_joint(self):</span>
-        <span class="c1"># self._switch_controller(self, &quot;pos_joint_traj_controller&quot;)</span>
+    <span class="c1"># self._switch_controller(self, &quot;pos_joint_traj_controller&quot;)</span>
 
     <span class="c1">#     switch_controller = rospy.ServiceProxy(&#39;/controller_manager/switch_controller&#39;, SwitchController)</span>
     <span class="c1">#     controller_to_start = &#39;pos_joint_traj_controller&#39;</span>
@@ -340,7 +345,15 @@
         <span class="n">action_client</span><span class="o">.</span><span class="n">send_goal</span><span class="p">(</span><span class="n">action_goal</span><span class="p">)</span>
 
         <span class="c1"># Wait for the action to complete (you can also add error handling)</span>
-        <span class="n">action_client</span><span class="o">.</span><span class="n">wait_for_result</span><span class="p">()</span></div></div>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">action_client</span><span class="o">.</span><span class="n">wait_for_result</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Success&quot;</span>
+            <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">error_message</span>
+            <span class="k">return</span> <span class="n">success</span><span class="p">,</span> <span class="n">message</span></div></div>
 
 
 <span class="c1">#</span>
