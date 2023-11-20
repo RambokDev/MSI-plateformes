@@ -3,7 +3,7 @@
 # This program converts Euler angles to a quaternion.
 import numpy as np  # Scientific computing library for Python
 
-
+#
 def get_quaternion_from_euler(roll, pitch, yaw):
     """
     Convert an Euler angle to a quaternion.
