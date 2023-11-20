@@ -23,7 +23,7 @@ def robot_connexion(state: bool):
                     else:
                         return success, message, robot
         else:
-            return success, message
+            return success, message, None
     else:
         print("========Start Stoping brakes please wait ======")
         success, message = set_robot_state(False)

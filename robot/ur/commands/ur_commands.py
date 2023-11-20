@@ -272,7 +272,15 @@ class RobotUR(object):
         action_client.send_goal(action_goal)
 
         # Wait for the action to complete (you can also add error handling)
-        action_client.wait_for_result()
+        result = action_client.wait_for_result()
+        if result:
+            success = True
+            message = "Success"
+            return success, message
+        else:
+            success = False
+            message = result.error_message
+            return success, message
 
 
 #

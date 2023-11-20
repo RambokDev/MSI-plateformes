@@ -4,6 +4,8 @@ import rospy
 
 
 def cartesian_trajectory(robot, command, move, tool_position):
+    robot.switch_controler_robot("pose_based_cartesian_traj_controller")
+
     if command == 'initial_position':
         duration = 5
         success, message = robot.go_to_initial_position(duration)
@@ -25,6 +27,31 @@ def cartesian_trajectory(robot, command, move, tool_position):
                     robot.tool_down_pose
                 ))
                 return success, message
+            else:
+                success, message = robot.go_to_pose(geometry_msgs.Pose(
+                    geometry_msgs.Vector3(command[0], command[1], command[2]),
+                    tool_position
+                ))
+                return success, message
+
+
+def robot_get_info(info_type, robot):
+    if info_type == "current_pose":
+        data = robot.get_current_pose()
+        return data
+
+
+def robot_create_quaternions(pose):
+    data = geometry_msgs.Quaternion(pose.orientation.x, pose.orientation.y,
+                                    pose.orientation.z, pose.orientation.w)
+    return data
+
+
+def articular_trajectory(robot, command):
+    if type(command) == list:
+        robot.switch_controler_robot("pos_joint_traj_controller")
+        success, message = robot.send_joint_trajectory(robot.convert_deg_to_rad(command))
+        return success, message
 
 
 def robot_trajectory(trajectory_type, robot, command, move=None, tool_position="down"):
@@ -37,6 +64,8 @@ def robot_trajectory(trajectory_type, robot, command, move=None, tool_position="
 
     elif trajectory_type == "articular":
         print("========You are executing a articular trajectory======")
+        sucess, message = articular_trajectory(robot, command)
+        return sucess, message
     else:
         success = False
         message = "Invalid trajectory type"

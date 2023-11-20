@@ -14,7 +14,7 @@ from robot.ur.commands.start_ros_config import load_ros_config
 from robot.ur.commands.trajectory.compute_trajectory import compute_trajectory, formatting_commands
 from robot.ur.external.sensor_loop import sensor_loop
 from robot.ur.main_robot_connexion import robot_connexion
-from robot.ur.main_robot_trajectory import robot_trajectory
+from robot.ur.main_robot_trajectory import robot_trajectory, robot_get_info, robot_create_quaternions
 from robot.ur.venturi.venturi_state import venturi_state
 
 
@@ -27,8 +27,8 @@ class Ui(QtWidgets.QMainWindow, ):
         self.robot_state = False
         self.myRobot = None
         self.take_image.clicked.connect(self.show_image)
-        # self.take_image_angle.clicked.connect(self.show_image_angle)
-        # self.angle_state.clicked.connect(self.action_slider_button_clicked)
+        self.take_image_angle.clicked.connect(self.show_image_angle)
+        self.angle_state.clicked.connect(self.action_slider_button_clicked)
         self.go_to_box.clicked.connect(self.go_to_box_traj)
         self.config_button.clicked.connect(self.getfiles)
         self.quit_button.clicked.connect(self.exit_handler)
@@ -204,28 +204,28 @@ class Ui(QtWidgets.QMainWindow, ):
         print(ratio, W, H, width, height)
         return ratio, width, height
 
+    def action_slider_button_clicked(self):
+        print("The slider angle is : ", self.slider_angle.value())
+        wrist_angle = self.slider_angle.value()
+
+        pose_camera = [-61.86, -48.79, 65.73, -198.09, -32.20, wrist_angle]
+        success, message = robot_trajectory("articular", self.myRobot, pose_camera)
+
     def go_to_box_traj(self):
         """
         This function is called in order to go to the box trajectory,
         normally the venturi is already start
         """
-        print("Current pose : {}".format(self.myRobot.get_current_pose()))
-        current_pose_orientation = self.myRobot.get_current_pose().orientation
+        current_pose = robot_get_info("current_pose", self.myRobot)
         camera_command = [-0.883, 0.775, 0.300]
-        current_quaternions = geometry_msgs.Quaternion(current_pose_orientation.x, current_pose_orientation.y,
-                                                       current_pose_orientation.z, current_pose_orientation.w)
-        self.myRobot.switch_controler_robot("pose_based_cartesian_traj_controller")
-        self.myRobot.go_to_pose(geometry_msgs.Pose(
-            geometry_msgs.Vector3(camera_command[0], camera_command[1], camera_command[2]),
-            current_quaternions
-        ))
-        self.set_io_interface(1, self.PIN_VENTURI_VIDE, self.OFF)
-        #
-        # prepare_command_wrist = [-62.53, -28.76, 70.20, -222.05, -27.66, 180.70] old
+        current_quaternions = robot_create_quaternions(current_pose)
+        success, message = robot_trajectory("cartesian", self.myRobot, camera_command, None, current_quaternions)
+        venturi_state(0)
         prepare_command_wrist = [-61.88, -35.19, 73.40, -219.29, -32.29, 190]
-        self.move_wrist_angle(prepare_command_wrist)
-        self.myRobot.switch_controler_robot("pose_based_cartesian_traj_controller")
-        self.myRobot.go_to_initial_position(10)
+        if success:
+            success, message = robot_trajectory("articular", self.myRobot, prepare_command_wrist)
+            if success:
+                success, message = robot_trajectory("cartesian", self.myRobot, "initial_position", None, "down")
 
 
 def main():

@@ -29,6 +29,7 @@ def set_robot_state(state: bool):
         return resp.success, resp.message
     except rospy.ServiceException as exc:
         print("Service did not process request: " + str(exc))
+        return False, "Error"
 
 
 if __name__ == '__main__':
