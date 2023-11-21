@@ -11,3 +11,4 @@ minimalmodbus~=2.1.1
 imutils
 sphinx-sitemap
 sphinxcontrib-plantuml
+sphinx-ros
