@@ -1,4 +1,4 @@
-UR10e package
+robot.ur package
 ================
 
 Subpackages
