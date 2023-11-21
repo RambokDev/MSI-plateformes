@@ -9,3 +9,5 @@ pypylon~=2.3.0
 Pillow~=7.0.0
 minimalmodbus~=2.1.1
 imutils
+sphinx-sitemap
+sphinxcontrib-plantuml

@@ -1,3 +1,4 @@
 sphinx-rtd-theme
 sphinx
 readthedocs-sphinx-search
+sphinx-sitemap
