@@ -55,6 +55,29 @@ def articular_trajectory(robot, command):
 
 
 def robot_trajectory(trajectory_type, robot, command, move=None, tool_position="down"):
+    """This function is call in order run a trajectory
+
+    :param trajectory_type: The trajectory type ( articular or cartesian )
+    :type trajectory_type: str
+
+    :param robot: Robot interface return from the robot connexion
+
+    :param command: the robot command that you want to execute ( list or "initial_position")
+    :type command: list
+
+    :param move: the default value is None, your can also use "relative"
+    :type move: str
+
+    :param tool_position: the position of the tool ( down or horizontal )
+    :type tool_position: str
+
+
+    :return: success, message
+    :rtype: bool, str
+
+
+    """
+
     rospy.init_node("robotUR")
 
     if trajectory_type == "cartesian":

@@ -23,8 +23,17 @@ def start_ros_config(data_config):
 
 
 def load_ros_config(config_file):
-    """
-    This function is called in order to load the ros config file
+    """This function is called in order to load the ros config file
+
+
+    :param config_file: The json config file
+    :type config_file: file
+
+
+    :return: success, message
+    :rtype: bool, str
+
+
     """
     config_file = open(config_file, 'r')
 

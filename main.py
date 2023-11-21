@@ -17,7 +17,7 @@ from robot.ur.external.sensor_loop import sensor_loop
 from robot.ur.commands.robot_state import set_robot_state
 from robot.ur.commands.reverse_connexion import connexion_state
 import atexit
-from robot.ur.commands.start_ros_config import load_ros_config
+from robot.ur.start_ros_config import load_ros_config
 
 x_coef = 1 - 0.0182
 x_offset = (-0.0658) / 10  # en cm

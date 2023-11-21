@@ -127,6 +127,29 @@
 
 
 <div class="viewcode-block" id="robot_trajectory"><a class="viewcode-back" href="../../../robot.ur.html#robot.ur.main_robot_trajectory.robot_trajectory">[docs]</a><span class="k">def</span> <span class="nf">robot_trajectory</span><span class="p">(</span><span class="n">trajectory_type</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">move</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tool_position</span><span class="o">=</span><span class="s2">&quot;down&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is call in order run a trajectory</span>
+
+<span class="sd">    :param trajectory_type: The trajectory type ( articular or cartesian )</span>
+<span class="sd">    :type trajectory_type: str</span>
+
+<span class="sd">    :param robot: Robot interface return from the robot connexion</span>
+
+<span class="sd">    :param command: the robot command that you want to execute ( list or &quot;initial_position&quot;)</span>
+<span class="sd">    :type command: list</span>
+
+<span class="sd">    :param move: the default value is None, your can also use &quot;relative&quot;</span>
+<span class="sd">    :type move: str</span>
+
+<span class="sd">    :param tool_position: the position of the tool ( down or horizontal )</span>
+<span class="sd">    :type tool_position: str</span>
+
+
+<span class="sd">    :return: success, message</span>
+<span class="sd">    :rtype: bool, str</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s2">&quot;robotUR&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">trajectory_type</span> <span class="o">==</span> <span class="s2">&quot;cartesian&quot;</span><span class="p">:</span>

@@ -1,19 +1,13 @@
-robot.ur package
+UR10e
 ================
 
-Subpackages
------------
+The Universal Robots ``UR10`` is a robotic arm widely used in robotics applications. Its ROS (Robot Operating System) integration allows seamless communication and control. Users can leverage ROS functionalities to program and orchestrate UR10 movements, enabling advanced automation tasks. Integration includes ROS packages like ``universal_robot`` for easy implementation.
 
-.. toctree::
-   :maxdepth: 4
-
-   robot.ur.commands
-   robot.ur.external
 
 Submodules
 ----------
 
-robot.ur.main\_robot\_connexion module
+Connexion module
 --------------------------------------
 
 .. automodule:: robot.ur.main_robot_connexion
@@ -21,10 +15,18 @@ robot.ur.main\_robot\_connexion module
    :undoc-members:
    :show-inheritance:
 
-robot.ur.main\_robot\_trajectory module
+Trajectory module
 ---------------------------------------
 
 .. automodule:: robot.ur.main_robot_trajectory
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Config module
+----------------------------------
+
+.. automodule:: robot.ur.start_ros_config
    :members:
    :undoc-members:
    :show-inheritance:

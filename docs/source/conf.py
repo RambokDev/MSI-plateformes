@@ -5,7 +5,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../'))
+sys.path.insert(0, os.path.abspath('./../../'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 # sphinx-apidoc -o ./source ../robot
@@ -23,8 +23,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinxcontrib.plantuml',
-    'sphinx_ros',
 ]
 templates_path = ['_templates']
 exclude_patterns = []

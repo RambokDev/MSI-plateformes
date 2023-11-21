@@ -1,10 +1,10 @@
-robot packages
+Robot packages
 =============
 
 In this section you will find every things concerning the differents packages ``Ur packages`` and
 ``Fanuc packages``
 
-Subpackages
+Robot Type
 -----------
 
 .. toctree::

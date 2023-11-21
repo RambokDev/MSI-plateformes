@@ -1,6 +1,0 @@
-sphinx-rtd-theme
-sphinx
-readthedocs-sphinx-search
-sphinx-sitemap
-sphinxcontrib-plantuml
-sphinx-ros

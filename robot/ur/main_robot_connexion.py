@@ -6,6 +6,16 @@ from robot.ur.commands.reverse_connexion import connexion_state
 
 
 def robot_connexion(state: bool):
+    """This function allowed you to established the robot connexion
+
+    :param state: boolean state, no default value
+    :type state: bool
+
+    :return: success, message
+    :rtype: bool, str
+
+
+    """
     if state:
         print("======Start Robot Connexion======")
         success, message = set_robot_state(True)

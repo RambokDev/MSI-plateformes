@@ -10,7 +10,7 @@ import os
 from numpy import size
 from PyQt5.QtWidgets import QApplication
 from robot.ur.camera.camera_connexion import camera_basler
-from robot.ur.commands.start_ros_config import load_ros_config
+from robot.ur.start_ros_config import load_ros_config
 from robot.ur.commands.trajectory.compute_trajectory import compute_trajectory, formatting_commands
 from robot.ur.external.sensor_loop import sensor_loop
 from robot.ur.main_robot_connexion import robot_connexion

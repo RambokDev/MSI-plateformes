@@ -78,6 +78,16 @@
 
 
 <div class="viewcode-block" id="robot_connexion"><a class="viewcode-back" href="../../../robot.ur.html#robot.ur.main_robot_connexion.robot_connexion">[docs]</a><span class="k">def</span> <span class="nf">robot_connexion</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function allowed you to established the robot connexion</span>
+
+<span class="sd">    :param state: boolean state, no default value</span>
+<span class="sd">    :type state: bool</span>
+
+<span class="sd">    :return: success, message</span>
+<span class="sd">    :rtype: bool, str</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;======Start Robot Connexion======&quot;</span><span class="p">)</span>
         <span class="n">success</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="n">set_robot_state</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>

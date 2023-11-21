@@ -1,4 +1,4 @@
-Fanuc package
+Fanuc
 ===================
 
 Module contents
