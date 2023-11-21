@@ -6,12 +6,13 @@ build:
 
 sphinx:
   configuration: docs/source/conf.py
+  fail_on_warning: false
 
 formats:
   - pdf
   - epub
 
 
-python:
-   install:
-     - requirements: docs/requirements.txt
+#python:
+#   install:
+#     - requirements: docs/requirements.txt
