@@ -42,8 +42,10 @@ def robot_get_info(info_type, robot):
 
 
 def robot_create_quaternions(pose):
+    print(pose)
     data = geometry_msgs.Quaternion(pose.orientation.x, pose.orientation.y,
                                     pose.orientation.z, pose.orientation.w)
+    print(data)
     return data
 
 
