@@ -26,15 +26,12 @@ def connexion_state(state: bool):
         resp = robot_connexion_state()
         if resp.success:
             time.sleep(5)
+
             robot = RobotUR()
         return resp.success, resp.message, robot
     except rospy.ServiceException as exc:
         print("Service did not process request: " + str(exc))
-
-
-
-
-
+        return False, "Error", None
 
 
 if __name__ == '__main__':
