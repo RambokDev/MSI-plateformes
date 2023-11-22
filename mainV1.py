@@ -4,7 +4,7 @@ import subprocess
 import cv2
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QMessageBox, QFileDialog, QPushButton
 import sys
 import os
 from numpy import size
@@ -40,15 +40,17 @@ class Ui(QtWidgets.QMainWindow, ):
         self.filename = None
         self.sensor_contact = None
         # self.slider_angle.valueChanged.connect(self.slider_state)
+
+
         self.show()
 
     def exit_handler(self):
         if self.filename_config is not None:
             if self.robot_state:
                 robot_connexion(False)
-                QApplication.instance().quit
+                sys.exit()
         else:
-            QApplication.instance().quit
+            sys.exit()
 
     def getfiles(self):
         dlg = QFileDialog()
@@ -70,6 +72,8 @@ class Ui(QtWidgets.QMainWindow, ):
                 if success:
                     self.myRobot = robot
                     self.robot_state = True
+                    self.state_connexion_robot.setText("Connected")
+                    self.state_connexion_robot.setStyleSheet("background-color: green;padding :15px;color:white")
                     return success
                 else:
                     self.pop_up_screen(message)
@@ -79,6 +83,8 @@ class Ui(QtWidgets.QMainWindow, ):
                 success, message = robot_connexion(False)
                 if success:
                     self.robot_state = False
+                    self.state_connexion_robot.setText("Disconnected")
+                    self.state_connexion_robot.setStyleSheet("background-color: red;padding :15px;color:white")
                     subprocess.call(['killall', '-9', 'rosmaster'])
                     return success
                 else:
