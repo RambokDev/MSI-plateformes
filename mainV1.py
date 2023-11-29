@@ -189,7 +189,7 @@ class Ui(QtWidgets.QMainWindow, ):
         success, message = robot_trajectory("cartesian", self.myRobot, camera_command, None, "horizontal")
 
     def go_to_init(self):
-        success, message = robot_trajectory("articular", self.myRobot, "initial_position", None, "down")
+        success, message = robot_trajectory("cartesian", self.myRobot, "initial_position", None, "down")
 
     def compute_ratio(self, camera_type):
         """
