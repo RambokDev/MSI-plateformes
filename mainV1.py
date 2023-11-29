@@ -30,6 +30,7 @@ class Ui(QtWidgets.QMainWindow, ):
         self.take_image_angle.clicked.connect(self.show_image_angle)
         self.angle_state.clicked.connect(self.action_slider_button_clicked)
         self.go_to_box.clicked.connect(self.go_to_box_traj)
+        self.go_to_stack.clicked.connect(self.go_to_stack_traj)
         self.config_button.clicked.connect(self.getfiles)
         self.quit_button.clicked.connect(self.exit_handler)
         self.init.clicked.connect(self.go_to_init)
@@ -188,7 +189,7 @@ class Ui(QtWidgets.QMainWindow, ):
         success, message = robot_trajectory("cartesian", self.myRobot, camera_command, None, "horizontal")
 
     def go_to_init(self):
-        success, message = robot_trajectory("cartesian", self.myRobot, "initial_position", None, "down")
+        success, message = robot_trajectory("articular", self.myRobot, "initial_position", None, "down")
 
     def compute_ratio(self, camera_type):
         """
@@ -232,6 +233,45 @@ class Ui(QtWidgets.QMainWindow, ):
             success, message = robot_trajectory("articular", self.myRobot, prepare_command_wrist)
             if success:
                 success, message = robot_trajectory("cartesian", self.myRobot, "initial_position", None, "down")
+
+
+    intitial_value = 0
+    def go_to_stack_traj(self,initial_value, ):
+        """
+        This function is called in order to go to the stack trajectory,
+        normally the venturi is already start
+        """
+
+        "cartésien position"
+        camera_command = [-0.883, 0.775, 0.595, 1.196, -1.237, -1.249]
+        stack_up = [-0.570, 0.775, 0.595]
+        # stack_down = [-0.570, 0.775, -0.162, 1.196, -1.237, -1.249]
+
+        "articular position"
+        pose_camera = [-62.53, -47.37, 63.01, -196.36, -27.52, 0]
+        stack_position = [-62.09, -51.14, 45.08, 5.54, 30.37, 0]
+
+        current_pose = robot_get_info("current_pose", self.myRobot)
+
+
+
+        robot_trajectory("cartesian", self.myRobot, camera_command, None,None)
+        robot_trajectory("articular", self.myRobot, pose_camera, None,None)
+        robot_trajectory("articular", self.myRobot, stack_position, None,None)
+        robot_trajectory("cartesian",self.myRobot, stack_up,None,None)
+
+        current_value = initial_value
+        for _ in range(1):
+            offset_stack = current_value * 0.05
+            current_value += 1
+            stack_down = [-0.570, 0.775, -0.162 + offset_stack ]
+
+        robot_trajectory("cartesian", self.myRobot, stack_down ,None, None)
+        venturi_state(0)
+        robot_trajectory("cartesian",self.myRobot, stack_up,None,None)
+        robot_trajectory("cartesian",self.myRobot, "initial_position",None,None)
+
+
 
 
 def main():

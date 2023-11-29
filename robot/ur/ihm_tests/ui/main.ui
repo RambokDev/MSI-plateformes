@@ -71,47 +71,31 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
-              <widget class="QFrame" name="frame_6">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Camera Connexion</string>
                </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
+               <property name="checkable">
+                <bool>false</bool>
                </property>
-               <widget class="QPushButton" name="pushButton">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>-10</y>
-                  <width>282</width>
-                  <height>25</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Camera Connexion</string>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-                <property name="autoRepeat">
-                 <bool>false</bool>
-                </property>
-                <property name="autoExclusive">
-                 <bool>false</bool>
-                </property>
-                <property name="autoDefault">
-                 <bool>false</bool>
-                </property>
-                <property name="default">
-                 <bool>false</bool>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
-                </property>
-               </widget>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+               <property name="autoRepeat">
+                <bool>false</bool>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -249,7 +233,7 @@ color:white</string>
             <property name="maximumSize">
              <size>
               <width>300</width>
-              <height>200</height>
+              <height>300</height>
              </size>
             </property>
             <property name="frameShape">
@@ -364,6 +348,13 @@ color:white</string>
               <widget class="QPushButton" name="go_to_box">
                <property name="text">
                 <string>Go to box</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="go_to_stack">
+               <property name="text">
+                <string>Go to stack</string>
                </property>
               </widget>
              </item>
