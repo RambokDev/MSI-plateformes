@@ -10,11 +10,13 @@ import os
 from numpy import size
 from ihm_tests.camera.camera_connexion import camera_basler
 from plateform.devices.generic.hardware_actions import set_pin_state
+from plateform.robot.generic.main_pickup import Pickup
 from plateform.robot.generic.start_ros_config import load_ros_config
 from plateform.robot.specific.ur.commands.trajectory.compute_trajectory import compute_trajectory, formatting_commands
 from plateform.robot.specific.ur.external.sensor_loop import sensor_loop
 from plateform.robot.generic.main_robot_connexion import robot_connexion
 from plateform.robot.specific.ur.main_robot_trajectory import robot_trajectory, robot_get_info, robot_create_quaternions
+from plateform.robot.specific.ur.plateform_class import Platform
 
 
 class Ui(QtWidgets.QMainWindow, ):
@@ -167,24 +169,12 @@ class Ui(QtWidgets.QMainWindow, ):
         :param robot_command: the robot command
         :param vector: the vector to move the robot to pick and place pump
         """
-        self.sensor_contact = sensor_loop()
-        success, message = robot_trajectory("cartesian", self.myRobot, "initial_position", None, "down")
-        print(success, message)
-        if success:
-            robot_trajectory("cartesian", self.myRobot, robot_command, None, "down")
-            if self.sensor_contact != 1:
-                set_pin_state("ur", 0, True)
-                robot_trajectory("cartesian", self.myRobot, vector, "relative", "down")
-                self.go_to_camera()
-        else:
-            self.pop_up_screen(message)
 
-    def go_to_camera(self):
-        """
-        This function allowed you to go to the position of the angle camera
-        """
-        camera_command = [-0.883, 0.775, 0.594]
-        success, message = robot_trajectory("cartesian", self.myRobot, camera_command, None, "horizontal")
+        print("interface", Platform().Robot_interface)
+        print("params", Platform().Robot_params)
+
+        success, message = Pickup().run(Platform().Robot_interface, robot_command, vector)
+        print(success, message)
 
     def go_to_init(self):
         success, message = robot_trajectory("cartesian", self.myRobot, "initial_position", None, "down")

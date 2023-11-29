@@ -3,6 +3,8 @@ import time
 import roslaunch
 import json
 
+from plateform.robot.specific.ur.plateform_class import Platform
+
 
 def start_ros_config(data_config):
     """
@@ -20,6 +22,7 @@ def start_ros_config(data_config):
     parent = roslaunch.parent.ROSLaunchParent(uuid, roslaunch_file)
     parent.start()
     time.sleep(2)
+    return True
 
 
 def load_ros_config(config_file):
@@ -39,7 +42,10 @@ def load_ros_config(config_file):
 
     try:
         data_config = json.load(config_file)
-        start_ros_config(data_config)
+        success = start_ros_config(data_config)
+        if success:
+            robot_params = data_config['project']
+            Platform().storeParams(robot_params)
         config_file.close()
     except ValueError as e:
         return False, "Error loading config file: {}".format(e)

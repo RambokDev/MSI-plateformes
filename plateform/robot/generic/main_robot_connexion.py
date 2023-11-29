@@ -3,6 +3,7 @@
 from plateform.robot.specific.ur.connexion.robot_state import set_robot_state
 from plateform.robot.specific.ur.connexion.get_robot_mode import get_robot_mode
 from plateform.robot.specific.ur.connexion.reverse_connexion import connexion_state
+from plateform.robot.specific.ur.plateform_class import Platform
 
 
 def robot_connexion(state: bool):
@@ -29,6 +30,7 @@ def robot_connexion(state: bool):
                     success, message, robot = connexion_state(True)
                     if success:
                         print("=========You are actually connected===========")
+                        Platform().storeInterface(robot)
                         return success, message, robot
                     else:
                         return success, message, robot
