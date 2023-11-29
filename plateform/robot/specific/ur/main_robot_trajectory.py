@@ -41,6 +41,7 @@ def robot_get_info(info_type, robot):
         return data
 
 
+
 def robot_create_quaternions(pose):
     print(pose)
     data = geometry_msgs.Quaternion(pose.orientation.x, pose.orientation.y,
@@ -79,9 +80,6 @@ def robot_trajectory(trajectory_type, robot, command, move=None, tool_position="
 
 
     """
-
-    rospy.init_node("robotUR")
-
     if trajectory_type == "cartesian":
         print("========You are executing a cartesian trajectory======")
         success, message = cartesian_trajectory(robot, command, move, tool_position)

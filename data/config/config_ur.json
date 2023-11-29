@@ -1,0 +1,72 @@
+{
+  "robot_name": "Ur10e",
+  "robot_ip": "169.254.15.20",
+  "launch_file_path": "/home/icam/ur_ws/src/Universal_Robots_ROS_Driver/ur_robot_driver/launch/global.launch",
+  "project": {
+    "trajectories": [
+      {
+        "name": "init",
+        "data": {
+          "trajectory_type": "articular",
+          "coord": [-38.21, -78.83, 92.93, -104.02, -89.63, 51.88]
+        },
+        "type": "combobox",
+        "states": "3"
+      },
+      {
+        "name": "bac",
+        "data": {
+          "trajectory_type": "cartesian",
+          "coord": [-0.730,0.2,0.353]
+        },
+        "type": "combobox",
+        "states": "3"
+      },
+      {
+        "name": "camera_angle",
+        "data": {
+          "trajectory_type": "cartesian",
+          "coord": [-0.883, 0.775, 0.595],
+          "tool_position": "horizontal"
+        },
+        "type": "combobox",
+        "states": "3"
+      }
+
+    ],
+    "devices": [
+      {
+        "name": "venturi",
+        "data": 0,
+        "type": "toggle",
+        "states": "3"
+      },
+      {
+        "name": "trigger_cam_angle",
+        "data": 4,
+        "type": "button",
+        "states": "3"
+      },
+      {
+        "name": "trigger_cam_bac",
+        "data": 5,
+        "type": "button",
+        "states": "3"
+      }
+    ],
+    "configurations": [
+      {
+        "name": "speed",
+        "data": "",
+        "type": "slider",
+        "states": "2"
+      },
+      {
+        "name": "rot_pince",
+        "data": "",
+        "type": "slider",
+        "states": "2"
+      }
+    ]
+  }
+}

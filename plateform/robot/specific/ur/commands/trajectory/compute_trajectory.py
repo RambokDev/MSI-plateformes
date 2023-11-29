@@ -9,7 +9,7 @@ y_coef = 1 + 0.01835
 y_offset = (-0.35) / 10  # en cm
 z_offset = 0.5
 board_vector = [-0.64961, -0.15675, -0.45695, 0.00086, 0.00434, 0.00028]
-lines_coef = np.load(f'{os.getcwd()}/plateform/robot/specific/ihm_tests/CalibrationRobot/up_and_down_img_folder/lines_coef.npy')
+lines_coef = np.load(f'{os.getcwd()}/ihm_tests/CalibrationRobot/up_and_down_img_folder/lines_coef.npy')
 i, j, image_circle, image_vierge = 0, 0, 0, 0
 
 

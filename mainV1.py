@@ -8,13 +8,13 @@ from PyQt5.QtWidgets import QMessageBox, QFileDialog
 import sys
 import os
 from numpy import size
-from plateform.robot.specific.ur.camera.camera_connexion import camera_basler
+from ihm_tests.camera.camera_connexion import camera_basler
+from plateform.devices.generic.hardware_actions import set_pin_state
 from plateform.robot.generic.start_ros_config import load_ros_config
 from plateform.robot.specific.ur.commands.trajectory.compute_trajectory import compute_trajectory, formatting_commands
 from plateform.robot.specific.ur.external.sensor_loop import sensor_loop
 from plateform.robot.generic.main_robot_connexion import robot_connexion
 from plateform.robot.specific.ur.main_robot_trajectory import robot_trajectory, robot_get_info, robot_create_quaternions
-from plateform.robot.specific.ur.external.venturi.venturi_state import venturi_state
 
 
 class Ui(QtWidgets.QMainWindow, ):
@@ -22,7 +22,7 @@ class Ui(QtWidgets.QMainWindow, ):
         super(Ui, self).__init__()
         self.imageDeBase = None
         atexit.register(self.exit_handler)
-        uic.loadUi(f'{os.getcwd()}/plateform/robot/specific/ihm_tests/ui/main.ui', self)
+        uic.loadUi(f'{os.getcwd()}/ihm_tests/ui/main.ui', self)
         self.robot_state = False
         self.myRobot = None
         self.take_image.clicked.connect(self.show_image)
@@ -39,7 +39,6 @@ class Ui(QtWidgets.QMainWindow, ):
         self.filename = None
         self.sensor_contact = None
         # self.slider_angle.valueChanged.connect(self.slider_state)
-
 
         self.show()
 
@@ -152,6 +151,7 @@ class Ui(QtWidgets.QMainWindow, ):
         realY = round(y / ratio)
         print("coordinates in Real : ", realX, realY)
 
+        # robot
         start_pt, vect = compute_trajectory(realX, realY, 40)
         print(start_pt, vect)
         print('start : ', start_pt)
@@ -173,7 +173,7 @@ class Ui(QtWidgets.QMainWindow, ):
         if success:
             robot_trajectory("cartesian", self.myRobot, robot_command, None, "down")
             if self.sensor_contact != 1:
-                venturi_state(1)
+                set_pin_state("ur", 0, True)
                 robot_trajectory("cartesian", self.myRobot, vector, "relative", "down")
                 self.go_to_camera()
         else:
@@ -225,7 +225,7 @@ class Ui(QtWidgets.QMainWindow, ):
         camera_command = [-0.883, 0.775, 0.300]
         current_quaternions = robot_create_quaternions(current_pose)
         success, message = robot_trajectory("cartesian", self.myRobot, camera_command, None, current_quaternions)
-        venturi_state(0)
+        set_pin_state("ur", 0, False)
         prepare_command_wrist = [-61.88, -35.19, 73.40, -219.29, -32.29, 190]
         if success:
             success, message = robot_trajectory("articular", self.myRobot, prepare_command_wrist)

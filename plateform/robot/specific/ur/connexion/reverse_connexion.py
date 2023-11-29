@@ -25,7 +25,7 @@ def connexion_state(state: bool):
         resp = robot_connexion_state()
         if resp.success:
             time.sleep(5)
-
+            rospy.init_node("robotUR", disable_signals=True)
             robot = RobotUR()
         return resp.success, resp.message, robot
     except rospy.ServiceException as exc:
