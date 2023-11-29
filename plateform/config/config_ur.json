@@ -1,0 +1,6 @@
+{
+  "robot_name": "Ur10e",
+  "robot_ip": "169.254.15.20",
+  "launch_file_path": "/home/icam/ur_ws/src/Universal_Robots_ROS_Driver/ur_robot_driver/launch/global.launch"
+}
+

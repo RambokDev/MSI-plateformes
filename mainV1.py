@@ -4,18 +4,17 @@ import subprocess
 import cv2
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QMessageBox, QFileDialog, QPushButton
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
 import sys
 import os
 from numpy import size
-from PyQt5.QtWidgets import QApplication
-from robot.ur.camera.camera_connexion import camera_basler
-from robot.ur.start_ros_config import load_ros_config
-from robot.ur.commands.trajectory.compute_trajectory import compute_trajectory, formatting_commands
-from robot.ur.external.sensor_loop import sensor_loop
-from robot.ur.main_robot_connexion import robot_connexion
-from robot.ur.main_robot_trajectory import robot_trajectory, robot_get_info, robot_create_quaternions
-from robot.ur.venturi.venturi_state import venturi_state
+from plateform.robot.specific.ur.camera.camera_connexion import camera_basler
+from plateform.robot.generic.start_ros_config import load_ros_config
+from plateform.robot.specific.ur.commands.trajectory.compute_trajectory import compute_trajectory, formatting_commands
+from plateform.robot.specific.ur.external.sensor_loop import sensor_loop
+from plateform.robot.generic.main_robot_connexion import robot_connexion
+from plateform.robot.specific.ur.main_robot_trajectory import robot_trajectory, robot_get_info, robot_create_quaternions
+from plateform.robot.specific.ur.external.venturi.venturi_state import venturi_state
 
 
 class Ui(QtWidgets.QMainWindow, ):
@@ -23,7 +22,7 @@ class Ui(QtWidgets.QMainWindow, ):
         super(Ui, self).__init__()
         self.imageDeBase = None
         atexit.register(self.exit_handler)
-        uic.loadUi(f'{os.getcwd()}/robot/ur/ihm_tests/ui/main.ui', self)
+        uic.loadUi(f'{os.getcwd()}/plateform/robot/specific/ihm_tests/ui/main.ui', self)
         self.robot_state = False
         self.myRobot = None
         self.take_image.clicked.connect(self.show_image)
